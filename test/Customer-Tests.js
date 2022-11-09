@@ -1,9 +1,10 @@
 import { expect } from 'chai';
-import { roomsData } from 'data/roomsData.js'
-import { bookingsData } from '/data/bookingsData';
-import { customersData } from 'data/customersData.js'
-import { Room } from 'classes/Room.js'
-import { Bookings } from 'classes/Bookings.js'
+import { roomsData } from '../src/data/roomsData'
+import { bookingsData } from '../src/data/bookingsData';
+import { customersData } from '../src/data/customersData'
+import { Rooms } from '../src/classes/Rooms'
+import { Bookings } from '../src/classes/Bookings'
+import { Customer } from '../src/classes/Customer'
 
 
 describe ('Customer', () => {
@@ -13,8 +14,8 @@ describe ('Customer', () => {
     let customerData;
 
     beforeEach(() => {
-        roomData = roomsData.map(room => new Room(room))
-        bookingData = bookingsData.map(booking => new Booking(booking))
+        roomData = roomsData.map(room => new Rooms(room))
+        bookingData = bookingsData.map(booking => new Bookings(booking))
         customerData = customersData
         customer1 = new Customer(customerData[0]);
         customer2 = new Customer(customerData[1]);
