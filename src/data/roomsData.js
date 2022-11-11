@@ -199,4 +199,4 @@ export const roomsData = [
       "numBeds": 1,
       "costPerNight": 305.85
     }
-  ]
+  ];

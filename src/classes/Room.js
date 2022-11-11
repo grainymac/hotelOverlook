@@ -8,7 +8,7 @@ export class Room {
         this.costPerNight = roomData.costPerNight;
     };
 
-    getCostOfRoom() {
+    getCost() {
         return this.costPerNight;
     };
 };
