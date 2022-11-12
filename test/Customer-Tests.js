@@ -13,9 +13,9 @@ describe("Customer", () => {
   let customerData;
 
   beforeEach(() => {
-    roomData = roomsData.map(room => new Room(room));
-    bookingData = bookingsData.map(booking => new Booking(booking));
-    bookingData.forEach(booking => {
+    roomData = roomsData.map((room) => new Room(room));
+    bookingData = bookingsData.map((booking) => new Booking(booking));
+    bookingData.forEach((booking) => {
       booking.setRoom(roomData);
     });
     customerData = customersData;
@@ -42,85 +42,84 @@ describe("Customer", () => {
     expect(customer2.bookings).to.deep.equal([]);
   });
 
-  it("should be able to see all bookings", () => {
+  it.skip("should be able to see all bookings", () => {
     customer1.addBookings(bookingData);
 
     expect(customer1.bookings).to.deep.equal([
       {
-        id: '5fwrgu4i7k55hl6t8',
+        id: "5fwrgu4i7k55hl6t8",
         userID: 1,
-        date: '2022/02/05',
+        date: "2022/02/05",
         roomNumber: 12,
         roomDetails: {
           number: 12,
-          roomType: 'single room',
+          roomType: "single room",
           bidet: false,
-          bedSize: 'twin',
+          bedSize: "twin",
           numBeds: 2,
-          costPerNight: 172.09
-        }
+          costPerNight: 172.09,
+        },
       },
       {
-        
-          id: "5fwrgu4i7k55hl6x8",
-          userID: 1,
-          date: "2023/01/11",
-          roomNumber: 20,
-          roomDetails: {
-            number: 20,
-            roomType: "residential suite",
-            bidet: false,
-            bedSize: "queen",
-            numBeds: 1,
-            costPerNight: 343.95
-          }
-        }
+        id: "5fwrgu4i7k55hl6tq",
+        userId: 1,
+        date: "2022/02/03",
+        roomNumber: 12,
+        roomDetails: {
+          number: 12,
+          roomType: "single room",
+          bidet: false,
+          bedSize: "twin",
+          numBeds: 2,
+          costPerNight: 172.09,
+        },
+      },
     ]);
 
-  //   expect(customer2.bookings).to.deep.equal([
-  //     {
-  //       id: '5fwrgu4i7k55hl6tu',
-  //       userID: 2,
-  //       date: '2022/01/29',
-  //       roomNumber: 6,
-  //       roomDetails: {
-  //         number: 6,
-  //         roomType: 'junior suite',
-  //         bidet: true,
-  //         bedSize: 'queen',
-  //         numBeds: 1,
-  //         costPerNight: 397.02
-  //       }
-  //     },
-  //     {
-  //       id: '5fwrgu4i7k55hl6tx',
-  //       userID: 2,
-  //       date: '2022/01/18',
-  //       roomNumber: 17,
-  //       roomDetails: {
-  //         number: 17,
-  //         roomType: 'junior suite',
-  //         bidet: false,
-  //         bedSize: 'twin',
-  //         numBeds: 2,
-  //         costPerNight: 328.15
-  //       }
-  //     },
-  //     {
-  //       id: '5fwrgu4i7k55hl6u1',
-  //       userID: 2,
-  //       date: '2022/02/15',
-  //       roomNumber: 21,
-  //       roomDetails: {
-  //         number: 21,
-  //         roomType: 'single room',
-  //         bidet: false,
-  //         bedSize: 'full',
-  //         numBeds: 2,
-  //         costPerNight: 429.32
-  //       }
-  //     }
-  //   ]);
+    expect(customer2.bookings).to.deep.equal([
+      {
+        id: "5fwrgu4i7k55hl6tu",
+        userId: 2,
+        date: "2022/01/29",
+        roomNumber: 6,
+        roomDetails: {
+          number: 6,
+          roomType: "junior suite",
+          bidet: true,
+          bedSize: "queen",
+          numBeds: 1,
+          costPerNight: 397.02,
+        },
+      },
+      {
+        id: "5fwrgu4i7k55hl6tx",
+        userId: 2,
+        date: "2022/01/18",
+        roomNumber: 17,
+        roomDetails: {
+          number: 17,
+          roomType: "junior suite",
+          bidet: false,
+          bedSize: "twin",
+          numBeds: 2,
+          costPerNight: 328.15,
+        },
+      },
+      {
+        id: "5fwrgu4i7k55hl6u1",
+        userId: 2,
+        date: "2022/02/15",
+        roomNumber: 21,
+        roomDetails: {
+          number: 21,
+          roomType: "single room",
+          bidet: false,
+          bedSize: "full",
+          numBeds: 2,
+          costPerNight: 429.32,
+        },
+      },
+    ]);
   });
 
   it("should have no costs at start", () => {
@@ -128,12 +127,12 @@ describe("Customer", () => {
     expect(customer2.totalCost).to.equal(0);
   });
 
-  it("should have total cost", () => {
+  it.skip("should have total cost", () => {
     customer1.addBookings(bookingData);
-    // customer2.addBookings(bookingData);
+    customer2.addBookings(bookingData);
     customer1.updateTotalCost();
-    // customer2.updateTotalCost();
+    customer2.updateTotalCost();
     expect(customer1.totalCost).to.equal(344.18);
-    // expect(customer2.totalCost).to.equal(1154.49);
+    expect(customer2.totalCost).to.equal(1154.49);
   });
 });

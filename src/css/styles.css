@@ -68,29 +68,30 @@ img {
   justify-content: space-between;
 }
 
-/* --------------------------------------------------------showcase */
-.showcase {
+/* --------------------------------------------------------intro */
+.intro {
   height: 400px;
   background-color: var(--primary-color);
   color: #fff;
   position: relative;
 }
 
-.showcase h1 {
+.intro h1 {
   font-size: 40px;
 }
 
-.showcase p {
+.intro p {
   margin: 20px 0;
+  font-size: 20px;
 }
 
-.showcase .grid {
+.intro .grid {
   overflow: visible;
   grid-template-columns: 55% 45%;
   gap: 30px;
 }
 
-.showcase-form {
+.intro-form {
   position: relative;
   top: 60px;
   height: 350px;
@@ -99,12 +100,12 @@ img {
   z-index: 100;
 }
 
-.showcase-form .form-control {
+.intro-form .form-control {
   margin: 30px 0;
 }
 
-.showcase-form input[type='text'],
-.showcase-form input[type='email'] {
+.intro-form input[type='text'],
+.intro-form input[type='email'] {
   border: 0;
   border-bottom: 1px solid #b4becb;
   width: 100%;
@@ -112,39 +113,44 @@ img {
   font-size: 16px;
 }
 
-.showcase-form input:focus {
+.intro-form input:focus {
   outline: none;
 }
 
-.showcase::before,
-.showcase::after {
+.intro::before,
+.intro::after {
   content: '';
-  position: absolute;
+  /* position: absolute; */
   height: 100px;
   bottom: -70px;
   right: 0;
   left: 0;
-  background: #fff;
-  transform: skewY(-3deg);
+  /* background: #fff; */
+  /* transform: skewY(-3deg);
   -webkit-transform: skewY(-3deg);
-  -moz-transform: skewY(-3deg);
+  -moz-transform: skewY(-3deg); */
 }
 
-/* --------------------------------------------------------stats */
-.stats {
+.hotel {
+  height: 400px;
+  margin-bottom: -8px;
+}
+
+/* --------------------------------------------------------dashboard */
+.dashboard {
   padding-top: 100px;
 }
 
-.stats-heading {
+.dashboard-heading {
   max-width: 500px;
   margin: auto;
 }
 
-.stats .grid h3 {
+.dashboard .grid h3 {
   font-size: 35px;
 }
 
-.stats .grid p {
+.dashboard .grid p {
   font-size: 20px;
   font-weight: bold;
 }
@@ -194,24 +200,24 @@ img {
 @media(max-width: 768px) {
 
   .grid,
-  .showcase .grid,
-  .stats .grid,
+  .intro .grid,
+  .dashboard .grid,
   .cli .grid,
   .cloud .grid {
     grid-template-columns: 1fr;
     grid-template-rows: 1fr;
   }
 
-  .showcase {
+  .intro {
     height: auto;
   }
 
-  .showcase-text {
+  .intro-text {
     text-align: center;
     margin-top: 40px;
   }
 
-  .showcase-form {
+  .intro-form {
     justify-self: center;
     margin: auto;
   }

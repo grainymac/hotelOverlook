@@ -14,7 +14,7 @@ describe("Booking", () => {
   let bookingData;
 
   beforeEach(() => {
-    roomData = roomsData.map(room => new Room(room));
+    roomData = roomsData.map((room) => new Room(room));
     customerData = customersData;
     customer1 = new Customer(customersData[8]);
     customer2 = new Customer(customersData[9]);
@@ -63,21 +63,21 @@ describe("Booking", () => {
     booking2.setRoom(roomData);
     expect(booking1.roomDetails).to.deep.equal({
       number: 15,
-            roomType: 'residential suite',
-            bidet: false,
-            bedSize: 'full',
-            numBeds: 1,
-            costPerNight: 294.56
-        });
+      roomType: "residential suite",
+      bidet: false,
+      bedSize: "full",
+      numBeds: 1,
+      costPerNight: 294.56,
+    });
 
     expect(booking2.roomDetails).to.deep.equal({
       number: 24,
-            roomType: 'suite',
-            bidet: false,
-            bedSize: 'queen',
-            numBeds: 1,
-            costPerNight: 327.24
-        });
+      roomType: "suite",
+      bidet: false,
+      bedSize: "queen",
+      numBeds: 1,
+      costPerNight: 327.24,
+    });
   });
 
   it("should have the room info set to a room object", () => {
@@ -87,7 +87,7 @@ describe("Booking", () => {
     expect(booking2.roomDetails).to.be.an.instanceof(Room);
   });
 
-  it('should get room details after they have been set', () => {
+  it("should get room details after they have been set", () => {
     expect(booking1.roomDetails).to.equal("");
     expect(booking2.roomDetails).to.equal("");
     booking1.setRoom(roomData);
@@ -126,7 +126,11 @@ describe("Booking", () => {
   });
 
   it("should check if the current customer made a booking", () => {
-    expect(booking1.isBookedByCurrentCustomer(customer1, customerData)).to.equal(true);
-    expect(booking2.isBookedByCurrentCustomer(customer2, customerData)).to.equal(false);
+    expect(
+      booking1.isBookedByCurrentCustomer(customer1, customerData)
+    ).to.equal(true);
+    expect(
+      booking2.isBookedByCurrentCustomer(customer2, customerData)
+    ).to.equal(false);
   });
 });
