@@ -14,6 +14,7 @@
 
     <title>Hotel Overlook</title>
 </head>
+
 <body>
     <!-- Navbar -->
     <div class="navbar">
@@ -34,7 +35,11 @@
         <div class="container grid">
             <div class="intro-text">
                 <h1>Welcome to Hotel Overlook</h1>
-                <p class="welcome-text">If you are seeking superior hotels, our Overlook Hotel is the perfect location to begin your search. Our luxury sample hotel blends current-day modernity with classic elegance. You’ll enjoy the convenience of newly redesigned rooms and suites, a full-service fitness center, swimming pool, large restaurant and some of best bars and lounges to celebrate and entertain in sophisticated style. Just Login to get your room reserved!</p>
+                <p class="welcome-text">If you are seeking superior hotels, our Overlook Hotel is the perfect location
+                    to begin your search. Our luxury sample hotel blends current-day modernity with classic elegance.
+                    You’ll enjoy the convenience of newly redesigned rooms and suites, a full-service fitness center,
+                    swimming pool, large restaurant and some of best bars and lounges to celebrate and entertain in
+                    sophisticated style. Just Login to get your room reserved!</p>
             </div>
             <div>
                 <section class="home-display card">
@@ -54,81 +59,82 @@
                         <h2>You're already logged in, would you like to logout?</h2>
                         <button class="btn btn-primary button-center" id="logoutBtn" type="submit">Logout</button>
                     </section>
-                    <p id="validateMsg"><p>
+                    <p id="validateMsg">
+                    <p>
                 </section>
             </div>
         </div>
     </section>
 
-    <section class="head bg-primary py-3 hidden" id="headDashboard">   
+    <section class="head bg-primary py-3 hidden" id="headDashboard">
         <div class="container grid" id="headDashboardContainer">
         </div>
     </section>
 
 
-      <section class="bg-light py-3 hidden" id="bodyDashboard"> 
+    <section class="bg-light py-3 hidden" id="bodyDashboard">
         <div class="container grid">
-          <article>
-            <h2 class="md">Choose a Date and Room</h2>
-            <form class="custom-search-form">
-              <fieldset class="sm">
-                <legend>Customize Your Search</legend>
-                <label for="startDate">Date: </label>
-                <input type="date" value="2022-05-22" id="startDate">
-    
-                <label for="roomTypes">Room Type: </label>
-                <select name="roomTypes" id="roomTypes">
-                  <option value="all rooms" selected>All Rooms</option>
-                  <option value="suite">Suite</option>
-                  <option value="residential suite">Residential Suite</option>
-                  <option value="junior suite">Junior Suite</option>
-                  <option value="single room">Single Room</option>
-                </select>
-                <button class="btn btn-secondary" id="roomSearchBtn">Search</button>
-              </fieldset>
-          </form>
-          </article>
-          <!-- <img src=""> -->
-        </div>
-        </section>
+            <article>
+                <h2 class="md">Choose a Date and Room</h2>
+                <form class="custom-search-form">
+                    <fieldset class="sm">
+                        <legend>Customize Your Search</legend>
+                        <label for="startDate">Date: </label>
+                        <input type="date" value="2022-05-22" id="startDate">
 
-    <section class="my-4 hidden" id="dashDisplay"> 
+                        <label for="roomTypes">Room Type: </label>
+                        <select name="roomTypes" id="roomTypes">
+                            <option value="all rooms" selected>All Rooms</option>
+                            <option value="suite">Suite</option>
+                            <option value="residential suite">Residential Suite</option>
+                            <option value="junior suite">Junior Suite</option>
+                            <option value="single room">Single Room</option>
+                        </select>
+                        <button class="btn btn-secondary" id="roomSearchBtn">Search</button>
+                    </fieldset>
+                </form>
+            </article>
+            <!-- <img src=""> -->
+        </div>
+    </section>
+
+    <section class="my-4 hidden" id="dashDisplay">
         <div class="container grid booking-history">
-          <nav class="card bg-light p-3" id="bookingHistoryCard">
-            <h2 class="my-2">View Bookings</h2>
-            <ul id="bookingOptions">
-              <li><button class="sub-link" id="bookings">All Bookings</button></li>
-              <li><button class="sub-link" id="pastBookings">Past Bookings</button></li>
-              <li><button class="sub-link" id="presentBookings">Todays Bookings</button></li>
-              <li><button class="sub-link" id="futureBookings">Future Bookings</button></li>
-            </ul>
-            <h2 class="my-2">Total Cost</h2>
-            <ul>
-              <li id="totalCost"></li>
-            </ul>
-          </nav>
+            <nav class="card bg-light p-3" id="bookingHistoryCard">
+                <h2 class="my-2">View Bookings</h2>
+                <ul id="bookingOptions">
+                    <li><button class="sub-link" id="bookings">All Bookings</button></li>
+                    <li><button class="sub-link" id="pastBookings">Past Bookings</button></li>
+                    <li><button class="sub-link" id="presentBookings">Todays Bookings</button></li>
+                    <li><button class="sub-link" id="futureBookings">Future Bookings</button></li>
+                </ul>
+                <h2 class="my-2">Total Cost</h2>
+                <ul>
+                    <li id="totalCost"></li>
+                </ul>
+            </nav>
 
-          <nav class="card bg-light p-3" id="managerBookingHistory">
-            <section id="cards">
-            </section>
-            <h2 class="my-2">Find Customer</h2>
-            <form class="customer-search" id="customerSearch">
-              <label class="sm" for="customerSearchInput">Customer Name: </label> <br>
-              <input id="customerSearchInput"/>
-              <button class="btn btn-secondary" id="customerSearchBtn">Search</button>
-            </form>
-            <h3 class="sm" id="searchMsg"></h3>
-          </nav>
+            <nav class="card bg-light p-3" id="managerBookingHistory">
+                <section id="cards">
+                </section>
+                <h2 class="my-2">Find Customer</h2>
+                <form class="customer-search" id="customerSearch">
+                    <label class="sm" for="customerSearchInput">Customer Name: </label> <br>
+                    <input id="customerSearchInput" />
+                    <button class="btn btn-secondary" id="customerSearchBtn">Search</button>
+                </form>
+                <h3 class="sm" id="searchMsg"></h3>
+            </nav>
 
-          <div class="container grid p-1" id="dashboardContainer"> 
-          </div>
+            <div class="container grid p-1" id="dashboardContainer">
+            </div>
         </div>
-      </section>
-    
-      <section class="book-view my-2 hidden" id="bookingDisplay"> 
+    </section>
+
+    <section class="book-view my-2 hidden" id="bookingDisplay">
         <div class="container grid" id="bookingContainer">
         </div>
-      </section>
+    </section>
 
 
     <!-- footer -->
