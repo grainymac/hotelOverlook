@@ -39,7 +39,7 @@
             <div>
                 <section class="home-display card">
                     <!-- Login View -->
-                    <form class="login-display" id="loginDisplay" aria-description="A login card with username and password fields">
+                    <!-- <form class="login-display" id="loginDisplay">
                       <h2>Please login</h2>
                       <div class="login-form">
                         <input type="text" name="name" placeholder="Username" id="currentUsername" required>
@@ -48,7 +48,7 @@
                         <input type="password" name="password" placeholder="Password" id="currentPassword" required>
                       </div>
                         <button class="btn btn-primary" id="loginBtn" type="submit">Login</button>
-                    </form>
+                    </form> -->
                     <!-- Logout View -->
                     <section class="logout-display hidden" id="logoutDisplay">
                         <h2>You're already logged in, would you like to logout?</h2>
@@ -60,31 +60,44 @@
         </div>
     </section>
 
-    <section class="dashboard" id="dashboard">
-        <div class="container">
-            <h3 class="reservations-heading text-center my-1">View all your past and upcoming reservations!</h3>
-
-            <div class="grid grid-3 text-center my-4">
-                <div>
-                    
-                </div>
-                <div>
-
-                </div>
-                <div>
-
-                </div>
-            </div>
+    <section class="head bg-primary py-3 hidden" id="headDashboard">   
+        <div class="container grid" id="headDashboardContainer">
         </div>
     </section>
+
+
+      <section class="bg-light py-3 hidden" id="bodyDashboard"> 
+        <div class="container grid">
+          <article>
+            <h2 class="md">Choose a Date and Room</h2>
+            <form class="custom-search-form">
+              <fieldset class="sm">
+                <legend>Customize Your Search</legend>
+                <label for="startDate">Date: </label>
+                <input type="date" value="2022-05-22" id="startDate">
+    
+                <label for="roomTypes">Room Type: </label>
+                <select name="roomTypes" id="roomTypes">
+                  <option value="all rooms" selected>All Rooms</option>
+                  <option value="suite">Suite</option>
+                  <option value="residential suite">Residential Suite</option>
+                  <option value="junior suite">Junior Suite</option>
+                  <option value="single room">Single Room</option>
+                </select>
+                <button class="btn btn-secondary" id="roomSearchBtn">Search</button>
+              </fieldset>
+          </form>
+          </article>
+          <!-- <img src=""> -->
+        </div>
+        </section>
+
     <section class="my-4 hidden" id="dashDisplay"> 
-        <!-- Dashboard Nav Container-->
         <div class="container grid booking-history">
-          <!-- Customer Dashboard -->
           <nav class="card bg-light p-3" id="bookingHistoryCard">
             <h2 class="my-2">View Bookings</h2>
-            <ul id="bookingHistoryOptions">
-              <li><button class="sub-link" id="allBookings">All Bookings</button></li>
+            <ul id="bookingOptions">
+              <li><button class="sub-link" id="bookings">All Bookings</button></li>
               <li><button class="sub-link" id="pastBookings">Past Bookings</button></li>
               <li><button class="sub-link" id="presentBookings">Todays Bookings</button></li>
               <li><button class="sub-link" id="futureBookings">Future Bookings</button></li>
@@ -95,30 +108,25 @@
             </ul>
           </nav>
 
-          <!-- Manager Dashboard -->
           <nav class="card bg-light p-3" id="managerBookingHistory">
             <section id="cards">
-              <!-- load stats here -->
             </section>
             <h2 class="my-2">Find Customer</h2>
             <form class="customer-search" id="customerSearch">
               <label class="sm" for="customerSearchInput">Customer Name: </label> <br>
-              <input class="customer-search-input" id="customerSearchInput"/>
+              <input id="customerSearchInput"/>
               <button class="btn btn-secondary" id="customerSearchBtn">Search</button>
             </form>
-            <h2 class="sm" id="searchMsg"></h2>
+            <h3 class="sm" id="searchMsg"></h3>
           </nav>
 
-          <!-- Dashboard Booking Cards Container-->
-          <div class="container grid p-1" id="dashboardCardsContainer"> 
-            <!-- display dashboard cards here -->
+          <div class="container grid p-1" id="dashboardContainer"> 
           </div>
         </div>
       </section>
     
       <section class="book-view my-2 hidden" id="bookingDisplay"> 
         <div class="container grid" id="bookingContainer">
-          <!-- display book cards here -->
         </div>
       </section>
 
