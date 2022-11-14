@@ -7,8 +7,8 @@ import { fetchData } from "./apiCalls";
 // An example of how you tell webpack to use an image (also need to link to it in the index.html)
 import "./images/turing-logo.png";
 import "./images/pexels-pixabay-258154.jpg";
-import domUpdates from './domUpdates'
-import { bookingsData } from "./data/bookingsData";
+import { domUpdates } from './domUpdates.js'
+// import { bookingsData } from "./data/bookingsData";
 import domUpdates from "./domUpdates";
 
 //  =========================================================================QUERY SELECTORS
