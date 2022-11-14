@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { roomsData } from "../src/data/roomsData";
-import { bookingsData } from "../src/data/bookingsData";
+import { sampleBookingsData } from "../src/data/sampleBookingsData";
 import { customersData } from "../src/data/customersData";
 import { Room } from "../src/classes/Room";
 import { Booking } from "../src/classes/Booking";
@@ -14,7 +14,7 @@ describe("Customer", () => {
 
   beforeEach(() => {
     roomData = roomsData.map((room) => new Room(room));
-    bookingData = bookingsData.map((booking) => new Booking(booking));
+    bookingData = sampleBookingsData.map((booking) => new Booking(booking));
     bookingData.forEach((booking) => {
       booking.setRoom(roomData);
     });
@@ -42,9 +42,9 @@ describe("Customer", () => {
     expect(customer2.bookings).to.deep.equal([]);
   });
 
-  it.skip("should be able to see all bookings", () => {
+  it("should be able to see all bookings", () => {
     customer1.addBookings(bookingData);
-
+    customer2.addBookings(bookingData);
     expect(customer1.bookings).to.deep.equal([
       {
         id: "5fwrgu4i7k55hl6t8",
@@ -62,7 +62,7 @@ describe("Customer", () => {
       },
       {
         id: "5fwrgu4i7k55hl6tq",
-        userId: 1,
+        userID: 1,
         date: "2022/02/03",
         roomNumber: 12,
         roomDetails: {
@@ -79,7 +79,7 @@ describe("Customer", () => {
     expect(customer2.bookings).to.deep.equal([
       {
         id: "5fwrgu4i7k55hl6tu",
-        userId: 2,
+        userID: 2,
         date: "2022/01/29",
         roomNumber: 6,
         roomDetails: {
@@ -93,7 +93,7 @@ describe("Customer", () => {
       },
       {
         id: "5fwrgu4i7k55hl6tx",
-        userId: 2,
+        userID: 2,
         date: "2022/01/18",
         roomNumber: 17,
         roomDetails: {
@@ -107,7 +107,7 @@ describe("Customer", () => {
       },
       {
         id: "5fwrgu4i7k55hl6u1",
-        userId: 2,
+        userID: 2,
         date: "2022/02/15",
         roomNumber: 21,
         roomDetails: {
@@ -127,7 +127,7 @@ describe("Customer", () => {
     expect(customer2.totalCost).to.equal(0);
   });
 
-  it.skip("should have total cost", () => {
+  it("should have total cost", () => {
     customer1.addBookings(bookingData);
     customer2.addBookings(bookingData);
     customer1.updateTotalCost();
