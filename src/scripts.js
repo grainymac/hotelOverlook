@@ -53,7 +53,7 @@ const pastBookings = document.querySelector("#pastBookings");
 const presentBookings = document.querySelector("#presentBookings");
 const futureBookings = document.querySelector("#futureBookings");
 const headDashboardContainer = document.querySelector('#headDashboardContainer')
-
+const cards = document.querySelector('#cards')
 // =========================================================================EVENT LISTENERS
 window.addEventListener("load", () => loadData());
 
@@ -93,7 +93,7 @@ roomSearchBtn.addEventListener("click", (event) => {
   displayAvailableBookings(getStartDate(), roomTypes.value);
 });
 
-//  =========================================================================DOM
+//  ========================================================================= DOM
 const hideElemet = (element) => {
     element.classList.add('hidden')
 }
@@ -200,8 +200,22 @@ const displayDashHead = (displayName, welcomeMsg) => {
     </article>`
 }
 
+const displayManagerDashboard = (roomsAvailable, bookedRooms, salesTotal) => {
+    let availableRoomCount = roomsAvailable.length
+    let occupiedRoomPercent = Math.round((bookedRooms.length / 25) * 100)
+    cards.innerHTML = `
+        <h2 class="md my-3 text-center">Info for ${getCurrentDate()}</h2>
+        <h3 class="my-2">Available rooms</h2>
+        <p class="sm">${availableRoomCount}</p>
+        <h3 class="my-2">Occupied rooms</h2>
+        <p class="sm">${occupiedRoomPercent}</p>
+        <h3 class="my-2">Total sales</h2>
+        <p class="sm">${salesTotal}</p>
 
-//  =========================================================================FETCH CALLS
+    `
+}
+
+//  ========================================================================= FETCH CALLS
 const loadData = () => {
   const getAllCustomers = fetchData(
     "http://localhost:3001/api/v1/customers",
@@ -278,7 +292,6 @@ const deleteBooking = (bookingToBeDeleted) => {
     .catch((error) => console.log(error));
 };
 
-const 
 //  =========================================================================FUNCTIONS
 const hideElements = () => {
   hideElement(homeDisplay);
