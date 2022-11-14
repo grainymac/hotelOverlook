@@ -1,39 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link rel="stylesheet" href="<link rel=" stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
-        integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
-    <!-- <link rel="stylesheet" href="/src/css/styles.css">
-    <link rel="stylesheet" href="/src/css/utilities.css"> -->
-
     <title>Hotel Overlook</title>
 </head>
 
 <body>
-    <!-- Navbar -->
     <div class="navbar">
         <div class="container flex">
-            <h1 class="logo">Overlook</h1>
+            <h1 class="logo">Hotel Overlook</h1>
             <nav>
                 <ul>
-                    <li><button class="btn" id="homeDisplayLink">Home</button></li>
-                    <li><button class="btn" id="reservationsLink">Reservations</button></li>
-                    <li><button class="btn" id="dashboardLink">Dashboard</button></li>
+                    <li><button class="btn btn-outline btn-primary" id="navHomeBtn">Home</button></li>
+                    <li><button class="btn btn-outline btn-primary" id="navDashboardBtn">Dashboard</button></li>
+                    <li><button class="btn btn-outline btn-primary" id="navReserveBtn">Reservation</button></li>
                 </ul>
             </nav>
         </div>
     </div>
 
-    <!-- intro -->
     <section class="intro home-display" id="homeDisplay">
         <div class="container grid">
-            <div class="intro-text">
+            <div>
                 <h1>Welcome to Hotel Overlook</h1>
                 <p class="welcome-text">If you are seeking superior hotels, our Overlook Hotel is the perfect location
                     to begin your search. Our luxury sample hotel blends current-day modernity with classic elegance.
@@ -42,7 +32,7 @@
                     sophisticated style. Just Login to get your room reserved!</p>
             </div>
             <div>
-                <section class="home-display card">
+                <section class="card">
                     <!-- Login View -->
                     <!-- <form class="login-display" id="loginDisplay">
                       <h2>Please login</h2>
@@ -55,19 +45,20 @@
                         <button class="btn btn-primary" id="loginBtn" type="submit">Login</button>
                     </form> -->
                     <!-- Logout View -->
-                    <section class="logout-display hidden" id="logoutDisplay">
+                    <!-- <section class="logout-display hidden" id="logoutDisplay">
                         <h2>You're already logged in, would you like to logout?</h2>
                         <button class="btn btn-primary button-center" id="logoutBtn" type="submit">Logout</button>
                     </section>
                     <p id="validateMsg">
                     <p>
-                </section>
+                </section> -->
             </div>
         </div>
     </section>
 
     <section class="head bg-primary py-3 hidden" id="headDashboard">
         <div class="container grid" id="headDashboardContainer">
+
         </div>
     </section>
 
@@ -75,13 +66,12 @@
     <section class="bg-light py-3 hidden" id="bodyDashboard">
         <div class="container grid">
             <article>
-                <h2 class="md">Choose a Date and Room</h2>
+                <h2 class="md">Choose a date and room</h2>
                 <form class="custom-search-form">
                     <fieldset class="sm">
-                        <legend>Customize Your Search</legend>
+                        <legend>search options</legend>
                         <label for="startDate">Date: </label>
                         <input type="date" value="2022-05-22" id="startDate">
-
                         <label for="roomTypes">Room Type: </label>
                         <select name="roomTypes" id="roomTypes">
                             <option value="all rooms" selected>All Rooms</option>
@@ -90,7 +80,7 @@
                             <option value="junior suite">Junior Suite</option>
                             <option value="single room">Single Room</option>
                         </select>
-                        <button class="btn btn-secondary" id="roomSearchBtn">Search</button>
+                        <button class="btn btn-secondary" id="bookSearchBtn">Search</button>
                     </fieldset>
                 </form>
             </article>
@@ -98,9 +88,9 @@
         </div>
     </section>
 
-    <section class="my-4 hidden" id="dashDisplay">
+    <section class="my-4 hidden" id="dashboardDisplay">
         <div class="container grid booking-history">
-            <nav class="card bg-light p-3" id="bookingHistoryCard">
+            <nav class="card bg-light p-3" id="customerBookingHistory">
                 <h2 class="my-2">View Bookings</h2>
                 <ul id="bookingOptions">
                     <li><button class="sub-link" id="bookings">All Bookings</button></li>
@@ -113,18 +103,6 @@
                     <li id="totalCost"></li>
                 </ul>
             </nav>
-<!-- 
-            <nav class="card bg-light p-3" id="managerBookingHistory">
-                <section id="cards">
-                </section>
-                <h2 class="my-2">Find Customer</h2>
-                <form class="customer-search" id="customerSearch">
-                    <label class="sm" for="customerSearchInput">Customer Name: </label> <br>
-                    <input id="customerSearchInput" />
-                    <button class="btn btn-secondary" id="customerSearchBtn">Search</button>
-                </form>
-                <h3 class="sm" id="searchMsg"></h3>
-            </nav> -->
 
             <div class="container grid p-1" id="dashboardContainer">
                 
@@ -132,14 +110,14 @@
         </div>
     </section>
 
-    <section class="book-view my-2 hidden" id="bookingDisplay">
-        <div class="container grid" id="bookingContainer">
+    <section class="book-view my-2 hidden" id="bookDisplay">
+        <div class="container grid" id="bookContainer">
         </div>
     </section>
 
 
     <!-- footer -->
-    <footer class="footer bg-dark py-5">
+    <footer class="footer bg-dark py-5" id="footerDashboard">
 
     </footer>
     
