@@ -46,12 +46,13 @@ const customerSearchInput = document.querySelector("#customerSearchInput");
 const customerSearchBtn = document.querySelector("#customerSearchBtn");
 
 const searchMsg = document.querySelector('#searchMsg')
-
+const totalCost = document.querySelector('#totalCost')
 const validationMessage = document.querySelector("#validateMsg");
 const allBookings = document.querySelector("#allBookings");
 const pastBookings = document.querySelector("#pastBookings");
 const presentBookings = document.querySelector("#presentBookings");
 const futureBookings = document.querySelector("#futureBookings");
+const headDashboardContainer = document.querySelector('#headDashboardContainer')
 
 // =========================================================================EVENT LISTENERS
 window.addEventListener("load", () => loadData());
@@ -148,8 +149,58 @@ const displayBookedCards = (bookings, isHidden) => {
 }
 
 const displayBookingCost = (bookings) => {
-    const bookingTotal = 
+    const bookingTotal = bookings.reduce((acc, booking) => {
+        acc += booking.roomDetails.costPerNight
+        return acc;
+    }, 0)
+    return totalCost.innerText = `${bookingTotal.toFixed(2)}`
 }
+
+const displayBookingCards = (startDate, availableRooms) => {
+    clearDisplay(bookingContainer);
+    if (!availableRooms.length) {
+        boookingContainer.innerHTML = `
+        <h1>no available bookings</h1>`
+    }
+    displayAvailableRooms(bookingContainer, startDate, availableRooms)
+}
+
+const displayAvailableRooms = (container, startDate, availableRooms) => {
+    availableRooms.forEach(room => {
+        container.innerHTML += `
+        <div class="flex card">
+            <summary>
+                <h3>room ${room.number}</h3>
+                <h3>${room.roomType}</h3>
+                <ul>
+                <li class="sm"><span>beds:</span> ${room.numBeds}</li>
+                <li class="sm"><span>bed size:</span> ${room.bedSize}</li>
+                <li class="sm"><span>bidet:</span> ${room.bidet}</li>
+                <li class="sm"><span>date:</span> ${startDate}</li>
+                <li class="sm"><span>cost per night:</span> ${room.costPerNight.toFixed(2)}</li>
+            </ul>
+            </summary>
+            <button class="btn" id="${room.number}">reserve</button>
+        </div>`
+    })
+}
+
+const displayDashboardHeader = (currentCustomer) => {
+    const displayName = `${currentCustomer.name}`
+    const welcomeMsg = 'Welcome to Hotel Overlook!'
+    displayDashHead(displayName, welcomeMsg);
+}
+
+const displayDashHead = (displayName, welcomeMsg) => {
+    headDashboardContainer.innerHTML += `
+    <article>
+        <h2 class="lg">${displayName}</h2>
+        <p>Date: ${getCurrentDate()}</p>
+        <p>${welcomeMsg}</p>
+    </article>`
+}
+
+
 //  =========================================================================FETCH CALLS
 const loadData = () => {
   const getAllCustomers = fetchData(
@@ -227,7 +278,7 @@ const deleteBooking = (bookingToBeDeleted) => {
     .catch((error) => console.log(error));
 };
 
-
+const 
 //  =========================================================================FUNCTIONS
 const hideElements = () => {
   hideElement(homeDisplay);
@@ -345,10 +396,10 @@ const getAvailableRooms = (startDate, roomType) => {
   let bookRoomNumbers = allBookingData
     .filter((booking) => booking.date === startDate)
     .map((bookedRoom) => bookedRoom.roomNumber);
-  let availableRoom = allRoomData.filter(
+  let availableRooms = allRoomData.filter(
     (room) => !bookRoomNumbers.includes(room.number)
   );
-  let newAvailableRooms = filterRoomType(availableRoom, roomType);
+  let newAvailableRooms = filterRoomType(availableRooms, roomType);
   return newAvailableRooms;
 };
 
