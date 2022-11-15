@@ -193,7 +193,7 @@ function loadCustomer() {
   currentCustomer.updateTotalCost()
   getCurrentDate()
   startDate.min = currentDate
-  console.log(startDate.min)
+  // console.log(startDate.min)
   // display all customer booking information
   // getBooking()
 }
