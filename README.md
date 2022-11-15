@@ -9,14 +9,14 @@
   - [Deployed Page](#deployed-page)
   - [Possible Future Extensions](#possible-future-extensions)
   - [Set Up](#set-up)
-  - [Organizational Resources](#organizational-resources)
   - [Challenges](#challenges)
 
 
 
 ## Introduction
   This application is a hotel management tool for hotel customers and staff to manage room bookings and calculate customer bills.
-  
+![Screenshot 2022-11-15 at 12 58 08 PM](https://user-images.githubusercontent.com/106535343/202004538-4648b1d0-44f3-4537-949d-c06ad804d746.png)
+![Screenshot 2022-11-15 at 12 58 19 PM](https://user-images.githubusercontent.com/106535343/202004578-b17dcfae-cf24-4a88-9806-98a098f5731c.png)
 
 ## Project Specs
   - [here](https://frontend.turing.edu/projects/overlook.html)
@@ -32,19 +32,17 @@
   
 
 ## Features
-
-
-
-## Organizational Resources
-- [Project Trello Board](https://trello.com/invite/b/Ga710IW4/ATTI31c7a0a3186955b4bfe6a493c37a513934451AAB/overlook)
+  - Login page for single customer
 
 
 ## Deployed Page
-- 
+  - 
 
 
 ## Possible Future Extensions
-
+  - I'd like to implement the Manager feature as intended. 
+  - Use the whole customer database.
+  - Create a profile to login and make bookings.
 
 
 ## Set Up
@@ -54,9 +52,6 @@
 4. View the project by starting the server by running `npm start` and view at  http://localhost:8080/
 
 
-## Contributors
-
-
-
 ## Challenges
+  - Biggest challenges was updating the DOM in the places that I wanted to.  
 
