@@ -63,26 +63,20 @@
                 </div>
             </div>
 
-                <section class="card" hidden>
-                    Login View
-                    <form class="login-display" id="loginDisplay">
-                      <h2>Please login</h2>
-                      <div class="login-form">
-                        <input type="text" name="name" placeholder="Username" id="currentUsername" required>
-                      </div>
-                      <div class="login-form">
-                        <input type="password" name="password" placeholder="Password" id="currentPassword" required>
-                      </div>
-                        <button class="btn btn-primary" id="loginBtn" type="submit">Login</button>
-                    </form>
-                    Logout View
-                    <section class="logout-display hidden" id="logoutDisplay">
-                        <h2>You're already logged in, would you like to logout?</h2>
-                        <button class="btn btn-primary button-center" id="logoutBtn" type="submit">Logout</button>
-                    </section>
-                    <p id="validateMsg">
-                    <p>
-                </section>
+            <section class="card bg-light hidden" id="login">
+                <form>
+                    <h2>Please login</h2>
+                    <div class="form-control">
+                    <input type="text" name="name" placeholder="Username" id="username" required>
+                    </div>
+                    <div class="form-control">
+                    <input type="password" name="password" placeholder="Password" id="password" required>
+                    </div>
+                    <button class="btn btn-primary" id="loginBtn" type="submit">Login</button>
+                    <p class="sm text-center" id="message"></p>
+                </form>
+            </section>
+        
             </div>
         </div>
     </section>
@@ -128,18 +122,6 @@
     <section class="book-view my-2 hidden" id="bookDisplay">
         <div class="container grid" id="bookContainer">
         </div>
-    </section>
-    <section class="card bg-light">
-        <form class="hidden" id="login">
-            <h2>Please login</h2>
-            <div class="form-control">
-            <input type="text" name="name" placeholder="Username" id="currentUsername" required>
-            </div>
-            <div class="form-control">
-            <input type="password" name="password" placeholder="Password" id="currentPassword" required>
-            </div>
-            <button class="btn btn-primary" id="loginBtn" type="submit">Login</button>
-        </form>
     </section>
 </body>
 

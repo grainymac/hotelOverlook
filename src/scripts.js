@@ -37,8 +37,6 @@ const searchMsg = document.querySelector("#searchMsg");
 const totalCost = document.querySelector("#totalCost");
 const headDashboardContainer = document.querySelector("#headDashboardContainer");
 const cards = document.querySelector("#cards");
-const currentUsername = document.querySelector("#currentUsername");
-const currentPassword = document.querySelector("#currentPassword");
 const logoutBtn = document.querySelector("#logoutBtn");
 const welcomeTxt = document.querySelector('#welcomeTxt')
 const bookingInfo = document.querySelector('#bookingInfo')
@@ -54,6 +52,9 @@ const roomTypes = document.querySelector("#roomTypes");
 const searchResults = document.querySelector('#searchResults')
 const login = document.querySelector('#login')
 const loginBtn = document.querySelector("#loginBtn");
+const username = document.querySelector("#username");
+const password = document.querySelector("#password");
+const message = document.querySelector('#message')
 
 //  ========================================================================= FETCH CALLS
 const loadData = () => {
@@ -163,10 +164,8 @@ bookingsBtn.addEventListener('click', displayAllBookings)
 reserveBtn.addEventListener("click", displayAvailableBookings)
 loginBtn.addEventListener("click", (event) => {
   event.preventDefault();
-  if(validateSignIn(currentUsername.value, currentPassword.value)) {
-      loginUser();
-  }
-  loginView.reset();
+  validateSignIn(username.value, password.value)
+  // loginView.reset();
 });
 // navHomeBtn.addEventListener("click", loadHomeDisplay);
 // navDashboardBtn.addEventListener("click", loadDashboardDisplay);
@@ -209,7 +208,6 @@ function loginLoad() {
   searchResults.innerHTML = ''
   welcomeTxt.innerHTML = ''
   login.classList.remove('hidden')
-
 }
 
 // function clearDisplay(display) {
@@ -384,20 +382,24 @@ function displaySuccessMessage() {
   searchResults.innerHTML += `<h2> THANK YOU FOR RESERVING</h2>`
   setTimeout(() => updateData(), 3000)
 }
+
 function validateSignIn(username, password) {
-  if (username === 'customer50' && password === 'overlook2021') {
-    displayValidateSuccessMessage();
+  if ((username === 'customer50') && (password === 'overlook2021')) {
+    message.innerText = ''
+    login.classList.add('hidden')
+    loadData()
   } else if (password !== 'overlook2021') {
-    displayValidateInvalidMessage()
-    }
+    console.log('ughhhhhhhhhh', 238)
+    message.innerText = `Wrong password, try again!!`
+  }
 }
 
 
-function displayValidateSuccessMessage() {
-  searchResults.innerHTML = ''
-  searchResults.innerHTML += `<h2> SUCCESSFUL LOGIN</h2>`
-  setTimeout(() => loadData(), 3000)
-}
+// function displayValidateSuccessMessage() {
+//   login.classList.add('hidden')
+//   searchResults.innerHTML = `<h2> SUCCESSFUL LOGIN</h2>`
+//   setTimeout(() => loadData(), 2000)
+// }
 
 function displayValidateInvalidMessage() {
   searchResults.innerHTML = ''
