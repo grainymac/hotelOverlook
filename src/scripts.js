@@ -13,7 +13,6 @@ import { displayBookHeader } from "./domUpdates";
 let allCustomerData = [];
 let allRoomData = [];
 let allBookingData = [];
-
 let currentDate
 let currentCustomer = allCustomerData[49];
 
