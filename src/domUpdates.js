@@ -1,8 +1,8 @@
-const showElement = (element) => {
+export const showElement = (element) => {
   element.classList.remove("hidden");
 };
 
-const hideElemet = (element) => {
+export const hideElement = (element) => {
   element.classList.add("hidden");
 };
 
@@ -10,17 +10,19 @@ const clearDisplay = (view) => {
   view.innerHTML = "";
 };
 
-const displaySearchMsg = (message) => {
+export const displaySuccessMsg = (message) => {
+    const successMsg = document.querySelector("#validationMsg");
+    validationMsg.innerText = message;
+}
+
+export const displaySearchMsg = (message) => {
   searchMsg.innerText = message;
 };
 
-const displayManagerSearchMsg = (message) => {
-  dashboardContainer.innherHTML = `<h2 class='my-4 text-center md'>${message}</h2>`;
-};
-
-const displayDashboardCards = (bookings, isHidden = true) => {
-  clearDisplay(dashboardContainer);
-  if (!bookings.length) {
+export const displayDashboardCards = (bookings, isHidden=true) => {
+    clearDisplay(dashboardContainer);
+    console.log(typeof bookings)
+    if (!bookings.length) {
     dashboardContainer.innerHTML = `<h2>there are no bookings available</h2>`;
   } else {
     displayBookedCards(bookings, isHidden);
@@ -28,7 +30,7 @@ const displayDashboardCards = (bookings, isHidden = true) => {
   displayBookingCost(bookings);
 };
 
-const displayBookedCards = (bookings, isHidden) => {
+export const displayBookedCards = (bookings, isHidden) => {
   let hidBtn = "";
   if (isHidden) {
     hidBtn = "hidden";
@@ -64,17 +66,18 @@ const displayBookedCards = (bookings, isHidden) => {
 };
 
 const displayBookingCost = (bookings) => {
-  const bookingTotal = bookings.reduce((acc, booking) => {
-    acc += booking.roomDetails.costPerNight;
-    return acc;
-  }, 0);
-  return (totalCost.innerText = `${bookingTotal.toFixed(2)}`);
-};
+    const bookingTotal = bookings.reduce((acc, booking) => {
+        acc += booking.roomDetails.costPerNight;
+        return acc;
+    }, 0);
+    const totalCost = document.querySelector("#totalCost");
+    totalCost.innerText = `$${bookingTotal.toFixed(2)}`;
+}
 
-const displayBookingCards = (startDate, availableRooms) => {
+export const displayBookingCards = (startDate, availableRooms) => {
   clearDisplay(bookContainer);
   if (!availableRooms.length) {
-    boookingContainer.innerHTML = `
+    bookContainer.innerHTML = `
           <h1>no available bookings</h1>`;
   }
   displayAvailableRooms(bookContainer, startDate, availableRooms);
@@ -102,13 +105,20 @@ const displayAvailableRooms = (container, startDate, availableRooms) => {
   });
 };
 
-const displayDashboardHeader = (currentCustomer) => {
+export const displayDashboardHeader = (currentCustomer) => {
   const displayName = `${currentCustomer.name}`;
   const welcomeMsg = "Welcome to Hotel Overlook!";
-  displayDashHead(displayName, welcomeMsg);
+  displayContentHeadDash(displayName, welcomeMsg);
 };
 
-const displayDashHead = (displayName, welcomeMsg) => {
+export const displayBookHeader = () => {
+    const displayName = "make a reservation";
+    const welcomeMsg = "reserve a new room.";
+    displayContentHeadDash(displayName, welcomeMsg);
+}
+
+const displayContentHeadDash = (displayName, welcomeMsg) => {
+    const headDashboardContainer = document.querySelector("#headDashboardContainer");
   headDashboardContainer.innerHTML += `
       <article>
           <h2 class="lg">${displayName}</h2>
@@ -117,31 +127,15 @@ const displayDashHead = (displayName, welcomeMsg) => {
       </article>`;
 };
 
-const displayManagerDashboard = (roomsAvailable, bookedRooms, salesTotal) => {
-  let availableRoomCount = roomsAvailable.length;
-  let occupiedRoomPercent = Math.round((bookedRooms.length / 25) * 100);
-  cards.innerHTML = `
-          <h2 class="md my-3 text-center">Info for ${getCurrentDate()}</h2>
-          <h3 class="my-2">Available rooms</h2>
-          <p class="sm">${availableRoomCount}</p>
-          <h3 class="my-2">Occupied rooms</h2>
-          <p class="sm">${occupiedRoomPercent}</p>
-          <h3 class="my-2">Total sales</h2>
-          <p class="sm">${salesTotal}</p>
-      `;
-};
-
-const getCurrentDate = () => {
+export const getCurrentDate = () => {
   let today = new Date();
   let dd = today.getDate();
   let mm = today.getMonth() + 1;
   let yyyy = today.getFullYear();
   if (Number(dd) < 10) {
-    dd = `0${dd}`;
+    dd = `0${dd}`
   } else if (Number(mm) < 10) {
-    mm = `0${mm}`;
+    mm = `0${mm}`
   }
   return `${yyyy}/${mm}/${dd}`;
 };
-
-export default domUpdates
