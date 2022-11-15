@@ -233,6 +233,7 @@ function displayWelcomeMsg() {
 function displayAllBookings(event) {
   bookingInfo.innerHTML = ''
   bookingInfo.classList.remove('hidden')
+  console.log('CURRENT CUSTOMER', currentCustomer)
   const bookingInformation = currentCustomer.bookings.map(booking => {
     // console.log(booking.roomDetails)
   bookingInfo.innerHTML += `
@@ -256,12 +257,12 @@ function displayAvailableBookings(event) {
 
 
   function filterRoomType(rooms, roomTypes) {
-    console.log('TYPE', roomTypes)
-    if (roomTypes === allRooms) {
+    // console.log('TYPE', roomTypes)
+    if (roomTypes === 'all rooms') {
       return rooms;
     }
     let filteredRooms = rooms.filter((room) => room.roomType === roomTypes);
-    console.log('filter', filteredRooms)
+    // console.log('filter', filteredRooms)
     return filteredRooms;
   };
 
@@ -299,12 +300,22 @@ function getCurrentDate() {
 
 
 function displayBookingCards(startDate, availableRooms) {
-  // clearDisplay(searchResults);
+  searchResults.innerHTML = ''
   // console.log('availableRooms', availableRooms)
-  if (!availableRooms.length) {
-    searchResults.innerHTML += `<h2>no available bookings</h2>`;
+  console.log('what is this', currentCustomer)
+const ifAvailableRooms = currentCustomer.bookings.filter(booking => {
+  if (booking.date === startDate) {
+
   }
-  displayAvailableRooms(startDate, availableRooms);
+  // return searchResults.innerHTML += `<h2>no available booking please select another date</h2>`
+  
+})
+console.log('AVAILABLE', availableRooms)
+if (availableRooms.length === 0) {
+  return searchResults.innerHTML += `<h2>no available bookings</h2>`;
+}
+displayAvailableRooms(startDate, availableRooms);
+
 };
 
 function displayAvailableRooms(startDate, availableRooms) {
