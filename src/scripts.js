@@ -3,7 +3,7 @@ import "./css/utilities.css";
 import { Customer } from "./classes/Customer";
 import { Room } from "./classes/Room";
 import { Booking } from "./classes/Booking";
-import { fetchData } from "./apiCalls";
+import { fetchData, postAll } from "./apiCalls";
 // An example of how you tell webpack to use an image (also need to link to it in the index.html)
 import "./images/turing-logo.png";
 import "./images/pexels-pixabay-258154.jpg";
@@ -73,44 +73,46 @@ const loadData = () => {
     .catch((error) => console.log(error));
   };
   
-  const getBookingFromAPI = () => {
-    let url = "http://localhost:3001/api/v1/bookings";
-    let methodType = "GET";
-    // allBookingData.filter()
-    // Promise.all([fetchData(url, methodType)])
-    // .then((data) => {
-    //   allBookingData = [];
-    //   allBookingData = data[0].bookings.map((booking) => new Booking(booking));
-    //   allBookingData.map((booking) => booking.setRoom(allRoomData));
-    //   currentCustomer.addBookings(allBookingData);
-    //   displayDashboardCards(currentCustomer.bookings, false);
-    //   displayAvailableBookings(getStartDate(), roomTypes.value);
-    // })
-    // .catch((error) => {
-    //   displaySuccessMsg(`${error} there is an error`)
-    //   console.log(error)
-    // });
-};
+//   const getBookingFromAPI = () => {
+//     let url = "http://localhost:3001/api/v1/bookings";
+//     let methodType = "GET";
+//     allBookingData.filter()
+//     Promise.all([fetchData(url, methodType)])
+//     .then((data) => {
+//       allBookingData = [];
+//       allBookingData = data[0].bookings.map((booking) => new Booking(booking));
+//       allBookingData.map((booking) => booking.setRoom(allRoomData));
+//       currentCustomer.addBookings(allBookingData);
+//       displayDashboardCards(currentCustomer.bookings, false);
+//       displayAvailableBookings(getStartDate(), roomTypes.value);
+//     })
+//     .catch((error) => console.log(error));
+// };
 
-const postBookingToAPI = (roomNumber) => {
+function postBookingToAPI(roomNumber) {
   let url = "http://localhost:3001/api/v1/bookings";
   let methodType = "POST";
   let date = getStartDate();
-  let data = { userID: currentCustomer.id, date: date, roomNumber: roomNumber };
-  return fetchData(url, methodType, data);
-};
-
-const addNewBooking = (roomNumber) => {
-  Promise.all([postBookingToAPI(roomNumber)])
+  let body = JSON.stringify({ userID: currentCustomer.id, date: date, roomNumber: roomNumber });
+  const bookingToPost = fetchData(url, methodType, body);
+  postAll(bookingToPost)
     .then((data) => {
-      console.log(data[0]);
-      getBookingFromAPI();
+
     })
-    .catch((error) =>{
-      displaySuccessMsg(`${error} there is an error`)
-      console.log(error)
-    });
-};
+    .catch((err) => {
+      console.error(err);
+      cards.style.display = 'block';
+    })
+  };
+
+// const addNewBooking = (roomNumber) => {
+//   Promise.all([postBookingToAPI(roomNumber)])
+//     .then((data) => {
+//       console.log(data[0]);
+//       getBookingFromAPI();
+//     })
+//     .catch((error) => console.log(error))
+// };
 
 const deleteBookingFromAPI = (bookingToBeDeleted) => {
   let url = `http://localhost:3001/api/v1/bookings/${bookingToBeDeleted}`;
@@ -308,8 +310,17 @@ function displayAvailableRooms(startDate, availableRooms) {
                   <li class="sm"><span>cost per night:</span> ${room.costPerNight.toFixed(2)}</li>
               </ul>
               </summary>
-              <button class="btn" id="${room.number}">reserve</button>
+              <button class="room-btn btn-secondary" id="${room.number}">reserve</button>
           </div>`;
+          let roomNum = `#${room.number}`
+    const postBtn = document.querySelector('.room-btn')
+    // postBtn.addEventListener('click', addNewBooking)
+    postBtn.addEventListener("click", (event) => {
+    event.preventDefault();
+    postBookingToAPI(roomNum);
+    console.log('POST event', event)
+
+});
   });
 };
 
