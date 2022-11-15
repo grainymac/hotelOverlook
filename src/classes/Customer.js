@@ -10,10 +10,7 @@ export class Customer {
   }
 
   addBookings(allBookingsData) {
-    this.bookings = [];
-    this.bookings = allBookingsData.filter(
-      (booking) => Number(booking.userID) === Number(this.id)
-    );
+    this.bookings = allBookingsData.filter(booking => booking.userID === this.id);
     this.updateTotalCost();
   }
 

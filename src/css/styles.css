@@ -243,3 +243,7 @@ img {
     background-color: rgba(0, 0, 0, 0.1);
   }
 }
+
+.hidden {
+  display: none!important;
+}

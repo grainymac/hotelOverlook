@@ -1,4 +1,4 @@
-export const fetchData = (url, methodType, data) => { 
+export const fetchData = (url, methodType, body) => { 
     if (methodType === 'GET') {
         return fetch(url)
         .then(response => {
@@ -11,12 +11,11 @@ export const fetchData = (url, methodType, data) => {
     }
     
     if (methodType === 'POST') {
-        return fetch(url, {
+        // const postBookings = [];
+        const bookings = fetch(url, {
             method: methodType,
-            headers: {
-                'Content-Type' : 'application/json',
-            },
-            body: JSON.stringify(data),
+            body: JSON.stringify(body),
+            headers: { 'Content-Type': 'application/json' },
         })
         .then(response => {
             if (!response.ok) {
@@ -24,7 +23,10 @@ export const fetchData = (url, methodType, data) => {
             }
             return response;
         })
-        .then(response => response.json());
+        .then((response) => response.json())
+        .then(data => console.log('POST', data))
+        // postBookings.push(bookings)
+        // return postBookings
     }
 
     if (methodType === 'DELETE') {
@@ -41,4 +43,9 @@ export const fetchData = (url, methodType, data) => {
             return response;
         })
     }
+}
+
+export function postAll(requests) {
+    return Promise.all(requests)
+    .then((data) => data)
 }

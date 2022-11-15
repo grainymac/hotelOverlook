@@ -3,438 +3,495 @@ import "./css/utilities.css";
 import { Customer } from "./classes/Customer";
 import { Room } from "./classes/Room";
 import { Booking } from "./classes/Booking";
-import { fetchData } from "./apiCalls";
+import { fetchData, postAll } from "./apiCalls";
 // An example of how you tell webpack to use an image (also need to link to it in the index.html)
 import "./images/turing-logo.png";
 import "./images/pexels-pixabay-258154.jpg";
-import { bookingsData } from "./data/bookingsData";
+import { displayBookHeader } from "./domUpdates";
+// import { bookingsData } from "./data/bookingsData";
+// import { showElement, hideElement, displaySuccessMsg, displaySearchMsg, displayDashboardCards, displayBookingCards, displayDashboardHeader, displayBookHeader,getCurrentDate } from './domUpdates'
 
 //  =======================================================================GLOBAL VARIABLES
 let allCustomerData = [];
 let allRoomData = [];
 let allBookingData = [];
-let currentCustomer = "";
-let currentManager = "";
+// let currentCustomer = "";
+let currentDate
+let currentCustomer = allCustomerData[49]; 
 
 //  =========================================================================QUERY SELECTORS
-const homeBtn = document.querySelector("#homeDisplayLink");
-const dashboardBtn = document.querySelector("#dashboardLink");
-const reservationsBtn = document.querySelector("#reservationsLink");
-
+const navHomeBtn = document.querySelector("#navHomeBtn");
+const navDashboardBtn = document.querySelector("#navDashboardBtn");
+const navReserveBtn = document.querySelector("#navReserveBtn");
 const homeDisplay = document.querySelector("#homeDisplay");
 const dashboardDisplay = document.querySelector("#dashboardDisplay");
-const bookingDisplay = document.querySelector("#bookingDisplay");
-
+const bookDisplay = document.querySelector("#bookDisplay");
 const headDashboard = document.querySelector("#headDashboard");
 const bodyDashboard = document.querySelector("#bodyDashboard");
-
+const footerDashboard = document.querySelector("#footerDashboard");
+const dashboardContainer = document.querySelector("#dashboardContainer");
+const bookContainer = document.querySelector("#bookContainer");
+const customerBookingHistory = document.querySelector("#customerBookingHistory");
+const bookingOptions = document.querySelector("#bookingOptions");
+const searchMsg = document.querySelector("#searchMsg");
+const totalCost = document.querySelector("#totalCost");
+const headDashboardContainer = document.querySelector("#headDashboardContainer");
+const cards = document.querySelector("#cards");
 const currentUsername = document.querySelector("#currentUsername");
 const currentPassword = document.querySelector("#currentPassword");
 const loginBtn = document.querySelector("#loginBtn");
 const logoutBtn = document.querySelector("#logoutBtn");
-
-const dashboardContainer = document.querySelector("#dashboardContainer");
-const bookingContainer = document.querySelector("#bookingContainer");
-const bookingHistoryCard = document.querySelector("#bookingHistoryCard");
-const managerBookingHistory = document.querySelector("#managerBookingHistory");
-
-const bookingOptions = document.querySelector("#bookingOptions");
+const welcomeTxt = document.querySelector('#welcomeTxt')
+const bookingInfo = document.querySelector('#bookingInfo')
+const bookingsBtn = document.querySelector('#bookings')
+const reserveBtn = document.querySelector("#reserveBtn");
+const allRooms = document.querySelector('#allRooms')
+const suite = document.querySelector('#suite')
+const residentialSuite = document.querySelector('#residentialSuite')
+const juniorSuite = document.querySelector('#juniorSuite')
+const singleRoom = document.querySelector('#singleRoom')
 const startDate = document.querySelector("#startDate");
 const roomTypes = document.querySelector("#roomTypes");
-const roomSearchBtn = document.querySelectorAll("#roomSearchBtn");
-const customerSearchInput = document.querySelector("#customerSearchInput");
-const customerSearchBtn = document.querySelector("#customerSearchBtn");
+const searchResults = document.querySelector('#searchResults')
 
-const searchMsg = document.querySelector('#searchMsg')
-const totalCost = document.querySelector('#totalCost')
-const validationMessage = document.querySelector("#validateMsg");
-const allBookings = document.querySelector("#allBookings");
-const pastBookings = document.querySelector("#pastBookings");
-const presentBookings = document.querySelector("#presentBookings");
-const futureBookings = document.querySelector("#futureBookings");
-const headDashboardContainer = document.querySelector('#headDashboardContainer')
-
-// =========================================================================EVENT LISTENERS
-window.addEventListener("load", () => loadData());
-
-dashboardBtn.addEventListener("click", () => loadDashboardDisplay());
-homeBtn.addEventListener("click", () => loadHomeDisplay());
-bookingOptions.addEventListener("click", (event) => displayBookings(event));
-bookingDisplay;
-reservationsBtn.addEventListener("click", () => displayReservations());
-dashboardContainer.addEventListener("click", (event) => {
-  let bookingId = event.target.id;
-  if (!(getDateForBooking(bookingId) >= getCurrentDate())) {
-    displaySearchMsg("Cannot delete past reservations");
-  }
-  if (bookingId && getDateForBooking(bookingId) >= getCurrentDate()) {
-    deleteBooking(bookingId);
-  }
-});
-bookingContainer.addEventListener("click", (event) => {
-  let roomNumber = Number(event.target.id);
-  if (roomNumber) {
-    addNewBooking(roomNumber);
-  }
-});
-customerSearchBtn.addEventListener("click", (event) => {
-  event.preventDefault();
-  currentCustomer = getCustomerData(customerSearchInput.value);
-  if (!currentCustomer) {
-    displaySearchMsg("incorrect or invalid customer name");
-    currentCustomer = "";
-  }
-  loadDashboardDisplay();
-  customerSearchInput.value = "";
-});
-
-roomSearchBtn.addEventListener("click", (event) => {
-  event.preventDefault();
-  displayAvailableBookings(getStartDate(), roomTypes.value);
-});
-
-//  =========================================================================DOM
-const hideElemet = (element) => {
-    element.classList.add('hidden')
-}
-const showElement = (element) => {
-    element.classList.remove('hidden')
-}
-
-const clearDisplay = (view) => {
-    view.innerHTML = ''
-}
-
-const displaySearchMsg = (message) => {
-    searchMsg.innerText = message
-}
-
-const displayManagerSearchMsg = (message) => {
-    dashboardContainer.innherHTML = `<h2 class='my-4 text-center md'>${message}</h2>`
-}
-
-const displayDashboardCards = (bookings, isHidden=true) => {
-    clearDisplay(dashboardContainer);
-    if (!bookings.length) {
-        dashboardContainer.innerHTML = `<h2>there are no bookings available</h2>`
-    } else {
-        displayBookedCards(bookings, isHidden)
-    }
-    displayBookingCost(bookings)
-}
-
-const displayBookedCards = (bookings, isHidden) => {
-    let hidBtn = ''
-    if (isHidden) {
-        hidBtn ='hidden'
-    }
-    bookings.forEach(booking => {
-        dashboardContainer.innerHTML += `
-        <div class="card flex">
-            <summary>
-                <h3>room ${booking.roomDetails.number}</h3>
-                <h3>room ${booking.roomDetails.roomType}</h3>
-                <ul>
-                    <li class="sm"><span>beds:</span> ${booking.roomDetails.numBeds}</li>
-                    <li class="sm"><span>bed size:</span> ${booking.roomDetails.bedSize}</li>
-                    <li class="sm"><span>bidet:</span> ${booking.roomDetails.bidet}</li>
-                    <li class="sm"><span>date:</span> ${booking.date}</li>
-                    <li class="sm"><span>cost per night:</span> ${booking.roomDetails.costPerNight.toFixed(2)}</li>
-                    <li class="sm"><span>beds:</span> ${booking.roomDetails.numBeds}</li>
-                </ul>
-            </summary>
-            <button class="${hidBtn}" id="${booking.id}>delete</button
-        </div>`
-    })
-}
-
-const displayBookingCost = (bookings) => {
-    const bookingTotal = bookings.reduce((acc, booking) => {
-        acc += booking.roomDetails.costPerNight
-        return acc;
-    }, 0)
-    return totalCost.innerText = `${bookingTotal.toFixed(2)}`
-}
-
-const displayBookingCards = (startDate, availableRooms) => {
-    clearDisplay(bookingContainer);
-    if (!availableRooms.length) {
-        boookingContainer.innerHTML = `
-        <h1>no available bookings</h1>`
-    }
-    displayAvailableRooms(bookingContainer, startDate, availableRooms)
-}
-
-const displayAvailableRooms = (container, startDate, availableRooms) => {
-    availableRooms.forEach(room => {
-        container.innerHTML += `
-        <div class="flex card">
-            <summary>
-                <h3>room ${room.number}</h3>
-                <h3>${room.roomType}</h3>
-                <ul>
-                <li class="sm"><span>beds:</span> ${room.numBeds}</li>
-                <li class="sm"><span>bed size:</span> ${room.bedSize}</li>
-                <li class="sm"><span>bidet:</span> ${room.bidet}</li>
-                <li class="sm"><span>date:</span> ${startDate}</li>
-                <li class="sm"><span>cost per night:</span> ${room.costPerNight.toFixed(2)}</li>
-            </ul>
-            </summary>
-            <button class="btn" id="${room.number}">reserve</button>
-        </div>`
-    })
-}
-
-const displayDashboardHeader = (currentCustomer) => {
-    const displayName = `${currentCustomer.name}`
-    const welcomeMsg = 'Welcome to Hotel Overlook!'
-    displayDashHead(displayName, welcomeMsg);
-}
-
-const displayDashHead = (displayName, welcomeMsg) => {
-    headDashboardContainer.innerHTML += `
-    <article>
-        <h2 class="lg">${displayName}</h2>
-        <p>Date: ${getCurrentDate()}</p>
-        <p>${welcomeMsg}</p>
-    </article>`
-}
-
-
-//  =========================================================================FETCH CALLS
+//  ========================================================================= FETCH CALLS
 const loadData = () => {
-  const getAllCustomers = fetchData(
-    "http://localhost:3001/api/v1/customers",
-    "GET"
-  );
+  const getAllCustomers = fetchData("http://localhost:3001/api/v1/customers", "GET");
   const getAllRooms = fetchData("http://localhost:3001/api/v1/rooms", "GET");
-  const getbookings = fetchData("http://localhost:3001/api/v1/bookings", "GET");
-
-  Promise.all([getAllCustomers, getAllRooms, getbookings])
+  const getBookings = fetchData("http://localhost:3001/api/v1/bookings", "GET");
+  Promise.all([getAllCustomers, getAllRooms, getBookings])
     .then((data) => {
-      allCustomerData = data[0].customers.map(
-        (customer) => new Customer(customer)
-      );
+      allCustomerData = data[0].customers.map((customer) => new Customer(customer));
       allRoomData = data[1].rooms.map((room) => new Room(room));
       allBookingData = data[2].bookings.map((booking) => new Booking(booking));
-
-      allBookingData.map((booking) => booking.setRoom(allRoomData));
-    })
-    .catch((error) => console.log(error));
-};
-
-const getBookingAPI = () => {
-  let url = "http://localhost:3001/api/v1/bookings";
-  let methodType = "GET";
-
-  Promise.all([fetchData(url, methodType)])
-    .then((data) => {
-      allBookingData = [];
-      allBookingData = data[0].bookings.map((booking) => new Booking(booking));
+      console.log('booking shit', allBookingData)
       allBookingData.map((booking) => booking.setRoom(allRoomData));
 
-      currentCustomer.addBookings(allBookingData);
-
-      displayManagerDashboard(
-        getAvailableRooms(getCurrentDate(), "all rooms"),
-        getBookedRooms(),
-        getTotalSales()
-      );
-      displayDashboardCards(currentCustomer.bookings, false);
-      displayAvailableBookings(getStartDate(), roomTypes.value);
+      
+      currentCustomer = allCustomerData[49];
+      loadCustomer()
     })
     .catch((error) => console.log(error));
-};
+  };
 
-const postBookingAPI = (roomNumber) => {
-  let url = "http://localhost:3001/api/v1/bookings";
-  let methodType = "POST";
-  let date = getStartDate();
-  let data = { userID: currentCustomer.id, date: date, roomNumber: roomNumber };
-  return fetchData(url, methodType, data);
-};
-
-const addNewBooking = (roomNumber) => {
-  Promise.all([postBookingAPI(roomNumber)])
+  function updateData() {
+    const getAllCustomers = fetchData("http://localhost:3001/api/v1/customers", "GET");
+    const getAllRooms = fetchData("http://localhost:3001/api/v1/rooms", "GET");
+    const getBookings = fetchData("http://localhost:3001/api/v1/bookings", "GET");  
+  Promise.all([getAllCustomers, getAllRooms, getBookings])
     .then((data) => {
-      console.log(data[0]);
-      getBookingAPI();
+      allCustomerData = data[0].customers.map((customer) => new Customer(customer));
+      allRoomData = data[1].rooms.map((room) => new Room(room));
+      allBookingData = data[2].bookings.map((booking) => new Booking(booking));
+      allBookingData.map((booking) => booking.setRoom(allRoomData));
+      currentCustomer = allCustomerData[49];
+      loadCustomer()
+      searchResults.innerHTML = '';
     })
-    .catch((error) => console.log(error));
-};
+  };
+  
+  
+//   const getBookingFromAPI = () => {
+//     let url = "http://localhost:3001/api/v1/bookings";
+//     let methodType = "GET";
+//     allBookingData.filter()
+//     Promise.all([fetchData(url, methodType)])
+//     .then((data) => {
+//       allBookingData = [];
+//       allBookingData = data[0].bookings.map((booking) => new Booking(booking));
+//       allBookingData.map((booking) => booking.setRoom(allRoomData));
+//       currentCustomer.addBookings(allBookingData);
+//       displayDashboardCards(currentCustomer.bookings, false);
+//       displayAvailableBookings(getStartDate(), roomTypes.value);
+//     })
+//     .catch((error) => console.log(error));
+// };
 
-const deleteBookingAPI = (bookingToBeDeleted) => {
+function postBookingToAPI(roomNumber) {
+  // let url = "http://localhost:3001/api/v1/bookings";
+  // let methodType = "POST";
+  // let date = getStartDate();
+  // let body = JSON.stringify({ userID: currentCustomer.id, date: date, roomNumber: parseInt(roomNumber) });
+  // const bookingToPost = fetchData(url, methodType, body);
+  postAll(bookingToPost)
+    .then((data) => {
+
+    })
+    .catch((err) => {
+      console.error(err);
+      cards.style.display = 'block';
+    })
+  };
+
+// const addNewBooking = (roomNumber) => {
+//   Promise.all([postBookingToAPI(roomNumber)])
+//     .then((data) => {
+//       console.log(data[0]);
+//       getBookingFromAPI();
+//     })
+//     .catch((error) => console.log(error))
+// };
+
+const deleteBookingFromAPI = (bookingToBeDeleted) => {
   let url = `http://localhost:3001/api/v1/bookings/${bookingToBeDeleted}`;
   let methodType = "DELETE";
   return fetchData(url, methodType);
 };
 
 const deleteBooking = (bookingToBeDeleted) => {
-  Promise.all([deleteBookingAPI(bookingToBeDeleted)])
+  Promise.all([deleteBookingFromAPI(bookingToBeDeleted)])
     .then((data) => {
       console.log(data[0]);
-      getBookingAPI();
+      getBookingFromAPI();
     })
-    .catch((error) => console.log(error));
+    .catch((error) => {
+      displaySuccessMsg(`${error} there is an error`)
+      console.log(error)
+    });
 };
 
-const 
+
+// =========================================================================EVENT LISTENERS
+window.addEventListener("load", loadData);
+bookingsBtn.addEventListener('click', displayAllBookings)
+// reserveBtn.addEventListener('click', loadSearchResults)
+// reserveBtn.addEventListener("click", (event) => {
+//   event.preventDefault();
+//   displayAvailableBookings(getStartDate(), roomTypes.value);
+// });
+reserveBtn.addEventListener("click", displayAvailableBookings)
+
+// navHomeBtn.addEventListener("click", loadHomeDisplay);
+// navDashboardBtn.addEventListener("click", loadDashboardDisplay);
+// navReserveBtn.addEventListener("click", displayReservations);
+
+// bookingOptions.addEventListener("click", (event) => displayBookings(event));
+// dashboardContainer.addEventListener("click", (event) => {
+//   let bookingId = event.target.id;
+//   if (!(getDateForBooking(bookingId) >= getCurrentDate())) {
+//     displaySearchMsg("Cannot delete past reservations");
+//   }
+//   if (bookingId && getDateForBooking(bookingId) >= getCurrentDate()) {
+//     deleteBooking(bookingId);
+//   }
+// });
+// bookContainer.addEventListener("click", (event) => {
+//   let roomNumber = Number(event.target.id);
+//   if (roomNumber) {
+//     addNewBooking(roomNumber);
+//   }
+// });
+
+
+
 //  =========================================================================FUNCTIONS
-const hideElements = () => {
-  hideElement(homeDisplay);
-  hideElement(dashboardDisplay);
-  hideElement(bookingHistoryCard);
-  hideElement(managerBookingHistory);
-  hideElement(bookingDisplay);
-  hideElement(loginDisplay);
-  hideElement(logoutDisplay);
-  hideElement(headDashboard);
-  hideElement(bodyDashboard);
-};
-const getCustomerData = (customerData) => {
-  let customers = allCustomerData.find(
-    (customer) => customer.name === customerData
-  );
-  if (!customers) {
-    return false;
-  }
-  customers.addBookings(allBookingData);
-  return customers;
-};
+function loadCustomer() {
+  // console.log('bookings', currentCustomer)
+  currentCustomer.addBookings(allBookingData)
+  displayWelcomeMsg()
+  displayAllBookings()
+  currentCustomer.updateTotalCost()
+  getCurrentDate()
+  startDate.min = currentDate
+  // console.log(startDate.min)
+  // display all customer booking information
+  // getBooking()
+}
 
-const loadHomeDisplay = () => {
-  hideElements();
-  showElement(homeDisplay);
-  if (!currentCustomer && !currentManager) {
-    showElement(loginDisplay);
-  } else {
-    showElement(logoutDisplay);
-  }
-};
 
-const loadDashboardDisplay = () => {
-  if (!currentCustomer && !currentManager) {
-    loginError("Please login");
-  } else if (currentManager !== "") {
-    hideElements();
-    showElement(dashboardDisplay);
-    showElement(managerBookingHistory);
-    showElement(headDashboard);
-    showElement(bodyDashboard);
-    displayManagerDashboard(
-      getAvailableRooms(getCurrentDate(), "all rooms"),
-      getBookedRooms(),
-      getTotalSales()
-    );
-    displayDashboardHeader(currentManager);
+// function clearDisplay(display) {
+//   display.innerHTML = "";
+// };
 
-    if (currentCustomer !== "") {
-      displaySearchMsg("");
-      displayDashboardCards(currentCustomer.bookings, false);
-    } else {
-      displayManagerSearchMsg("");
-    }
-  } else {
-    hideElements();
-    showElement(dashboardDisplay);
-    showElement(headDashboard);
-    showElement(bodyDashboard);
-    showElement(bookingHistoryCard);
-    displayDashboardHeader(currentCustomer);
-    displayDashboardCards(currentCustomer.bookings);
-  }
-};
+// function loadSearchResults(event) {
+//   bookingInfo.classList.add('hidden')
+//   searchResults.classList.remove('hidden')
+//   event.preventDefault()
+//   getAvailableRooms(startDate.value, roomTypes.value)
+//   console.log('event', event.target)
+//   console.log(roomTypes.value)
+//   console.log(startDate.value)
+//   const roomInfoType = currentCustomer.bookings.filter(booking => {
+//     // console.log(booking.roomDetails)
+//     if (booking.roomDetails.roomType === roomTypes.value) {
+//       return booking.roomDetails
+//     }
+//   })
+// searchResults.innerHTML += `
+// <p>lkjfdsalkjfdsak ${roomTypes.value}</p>
+// `
+// }
 
-const displayReservations = () => {
-  if (!currentCustomer && !currentManager) {
-    loginError("please log in");
-  } else if (!currentCustomer) {
-    loginError("invalid user");
-  } else {
-    hideElements();
-    showElement(bookingDisplay);
-    showElement(headDashboard);
-    showElement(bodyDashboard);
-    resetBookingDisplay();
-    displayAvailableBookings(getCurrentDate(), roomTypes.value);
-    displayBookingHeader();
-  }
-};
+function displayWelcomeMsg() {
+  welcomeTxt.innerHTML = ''
+  welcomeTxt.innerHTML += `Welcome, ${currentCustomer.name}
+  <p><span class="sm">You have spent $${currentCustomer.totalCost} so far with us!</span></p>`
+}
 
-const resetBookingDisplay = () => {
-  roomTypes.value = "all rooms";
-  startDate.value - getCurrentDate().replaceAll("/", "-");
-};
+// function displayBookingInfo(event) {
+//   if (event.target.id === 'bookings') {
+//     displayAllBookings()
 
-const displayBookings = (event) => {
-  if (event.target.id === "bookings") {
-    displayDashboardCards(currentCustomer.bookings);
-  } else if (event.target.id === "pastBookings") {
-    const pastBookings = currentCustomer.bookings.filter(
-      (booking) => booking.date < getCurrentDate()
-    );
-    displayDashboardCards(pastBookings);
-  } else if (event.target.id === "presentBookings") {
-    const presentBookings = currentCustomer.bookings.filter(
-      (booking) => booking.date === getCurrentDate()
-    );
-    displayDashboardCards(presentBookings);
-  } else if (event.target.id === "futureBookings") {
-    const futureBookings = currentCustomer.bookings.filter(
-      (booking) => booking.date > getCurrentDate()
-    );
-    displayDashboardCards(futureBookings);
-  }
-};
+// }
 
-const displayAvailableBookings = (startDate, roomType) => {
-  let availableBooking = getAvailableRooms(startDate, roomType);
+function displayAllBookings(event) {
+  bookingInfo.innerHTML = ''
+  bookingInfo.classList.remove('hidden')
+  console.log('CURRENT CUSTOMER', currentCustomer)
+  const bookingInformation = currentCustomer.bookings.map(booking => {
+    // console.log(booking.roomDetails)
+  bookingInfo.innerHTML += `
+    <div class="card" id=${booking.id}>
+      <h3>${booking.date}</h3>
+      <h3>Room Number ${booking.roomNumber}</h3>
+      <h3>Conf# ${booking.id}</h3>
+  </div>
+  `
+})
+}
+
+function displayAvailableBookings(event) {
+  searchResults.classList.remove('hidden')
+  bookingInfo.classList.add('hidden')
+  event.preventDefault();
+  let startDate = getStartDate()
+  let availableBooking = getAvailableRooms(startDate, roomTypes.value);
   displayBookingCards(startDate, availableBooking);
 };
 
-const getAvailableRooms = (startDate, roomType) => {
-  let bookRoomNumbers = allBookingData
-    .filter((booking) => booking.date === startDate)
+
+  function filterRoomType(rooms, roomTypes) {
+    // console.log('TYPE', roomTypes)
+    if (roomTypes === 'all rooms') {
+      return rooms;
+    }
+    let filteredRooms = rooms.filter((room) => room.roomType === roomTypes);
+    // console.log('filter', filteredRooms)
+    return filteredRooms;
+  };
+
+console.log(startDate.value, roomTypes.value)
+function getAvailableRooms(startDate, roomTypes) {
+  let bookRoomNumbers = allBookingData.filter((booking) => booking.date === startDate)
     .map((bookedRoom) => bookedRoom.roomNumber);
   let availableRooms = allRoomData.filter(
     (room) => !bookRoomNumbers.includes(room.number)
   );
-  let newAvailableRooms = filterRoomType(availableRooms, roomType);
+  let newAvailableRooms = filterRoomType(availableRooms, roomTypes);
   return newAvailableRooms;
 };
 
-const filterRoomType = (rooms, roomType) => {
-  if (roomType === "all roms") {
-    return rooms;
-  }
-  let filteredRooms = rooms.filter((room) => room.roomType === roomType);
-  return filteredRooms;
-};
-
-const getBookedRooms = (startDate = getCurrentDate()) => {
-  let presentBookings = allBookingData.filter(
-    (booking) => booking.date === startDate
-  );
-  return presentBookings;
-};
-
-const getTotalSales = (startDate = getCurrentDate()) => {
-  let bookedRooms = getBookedRooms(startDate, allBookingData);
-  let totalSales = bookedRooms.reduce((acc, booking) => {
-    acc += booking.roomDetails.costPerNight;
-    return acc;
-  }, 0);
-  return totalSales.toFixed(2);
-};
-
-const getDateForBooking = (bookingId) => {
-  let findBooking = allBookingData.find((booking) => booking.id === bookingId);
-  return findBooking.date;
-};
-
-const getStartDate = () => {
+function getStartDate() {
+  console.log('START DATE', startDate.value)
   if (!startDate.value) {
     return getCurrentDate();
   }
-  return startDate.value(replaceAll("-", "/"));
+  return startDate.value.replaceAll("-", "/");
 };
+
+function getCurrentDate() {
+  let today = new Date();
+  let dd = today.getDate();
+  let mm = today.getMonth() + 1;
+  let yyyy = today.getFullYear();
+  if (Number(dd) < 10) {
+    dd = `0${dd}`
+  } else if (Number(mm) < 10) {
+    mm = `0${mm}`
+  }
+  currentDate = `${yyyy}-${mm}-${dd}`
+  return `${yyyy}/${mm}/${dd}`;
+};
+
+
+function displayBookingCards(startDate, availableRooms) {
+  searchResults.innerHTML = ''
+  // console.log('availableRooms', availableRooms)
+  console.log('what is this', currentCustomer)
+const ifAvailableRooms = currentCustomer.bookings.filter(booking => {
+  if (booking.date === startDate) {
+
+  }
+  // return searchResults.innerHTML += `<h2>no available booking please select another date</h2>`
+  
+})
+// console.log('AVAILABLE', availableRooms)
+if (availableRooms.length === 0) {
+  return searchResults.innerHTML += `<h2>no available bookings</h2>`;
+}
+displayAvailableRooms(startDate, availableRooms);
+};
+
+function displayAvailableRooms(startDate, availableRooms) {
+  searchResults.innerHTML = '';
+  // console.log('what', availableRooms)
+  availableRooms.forEach((room) => {
+    // console.log(room)
+    searchResults.innerHTML += `
+          <div class="flex card">
+              <summary>
+                  <h3>room ${room.number}</h3>
+                  <h3>${room.roomType}</h3>
+                  <ul>
+                  <li class="sm"><span>beds:</span> ${room.numBeds}</li>
+                  <li class="sm"><span>bed size:</span> ${room.bedSize}</li>
+                  <li class="sm"><span>bidet:</span> ${room.bidet}</li>
+                  <li class="sm"><span>date:</span> ${startDate}</li>
+                  <li class="sm"><span>cost per night:</span> ${room.costPerNight.toFixed(2)}</li>
+              </ul>
+              </summary>
+              <button class="room-btn btn-secondary" id="${room.number}">reserve</button>
+          </div>`;
+          let roomNum = `${room.number}`
+          console.log('what IS THIS', typeof roomNum)
+          // postBtn.addEventListener('click', addNewBooking)
+          // postBtn.addEventListener("click", (event) => {
+          //   postBooking(roomNum);
+          });
+        
+        // event.preventDefault();
+        const postBtn = document.querySelectorAll('.room-btn')
+        postBtn.forEach(button => button.addEventListener('click', postBooking))
+        
+}
+
+function postBooking(event) {
+  let roomNum = parseInt(event.target.id)
+  let url = "http://localhost:3001/api/v1/bookings";
+  let methodType = "POST";
+  let date = getStartDate();
+  let body = { userID: currentCustomer.id, date: date, roomNumber: roomNum }
+  fetchData(url, methodType, body);
+  console.log(body)
+displaySuccessMessage()
+  // setTimeout(updateData(), 1000)
+}
+
+function displaySuccessMessage() {
+  searchResults.innerHTML = ''
+  searchResults.innerHTML += `<h2> THANK YOU FOR RESERVING</h2>`
+  setTimeout(() => updateData(), 3000)
+}
+
+// function  searchResults.innerHTML = ''
+// searchResults.innerHTML += `<h2> THANK YOU FOR RESERVING</h2>`
+
+// function hideElements() {
+//   hideElement(homeDisplay);
+//   hideElement(dashboardDisplay);
+//   hideElement(customerBookingHistory);
+//   hideElement(bookDisplay);
+
+//   hideElement(headDashboard);
+//   hideElement(bodyDashboard);
+// };
+
+
+// const getCustomerData = (customerData) => {
+//   let customers = allCustomerData.find(customer => customer.name === customerData);
+//   if (!customers) {
+//     return false;
+//   }
+//   customers.addBookings(allBookingData);
+//   return customers;
+// };
+
+// function loadHomeDisplay () {
+//   hideElements();
+//   showElement(homeDisplay);
+//   // if (!currentCustomer) {
+//   //   showElement(loginDisplay);
+//   // } else {
+//   //   showElement(logoutDisplay);
+//   // }
+// };
+
+// function loadDashboardDisplay() {
+//   // if (!currentCustomer) {
+//   //   loginError("Please login");
+//   // } else {
+//     hideElements();
+//     showElement(dashboardDisplay);
+//     showElement(headDashboard);
+//     showElement(bodyDashboard);
+//     showElement(customerBookingHistory);
+//     displayDashboardHeader(currentCustomer);
+//     displayDashboardCards(currentCustomer.bookings);
+
+// };
+
+// function displayReservations() {
+//     hideElements();
+//     showElement(bookDisplay);
+//     console.log()
+//     showElement(headDashboard);
+//     showElement(bodyDashboard);
+//     showElement(footerDashboard)
+//     resetbookDisplay();
+//     displayAvailableBookings(getCurrentDate(), roomTypes.value);
+//     displayBookHeader();
+// };
+
+// const resetbookDisplay = () => {
+//   roomTypes.value = "all rooms";
+//   startDate.value = getCurrentDate().replaceAll("/", "-");
+// };
+
+// const displayBookings = (event) => {
+//   if (event.target.id === "bookings") {
+//     displayDashboardCards(currentCustomer.bookings);
+//   } else if (event.target.id === "pastBookings") {
+//     const pastBookings = currentCustomer.bookings.filter(
+//       (booking) => booking.date < getCurrentDate()
+//     );
+//     displayDashboardCards(pastBookings);
+//   } else if (event.target.id === "presentBookings") {
+//     const presentBookings = currentCustomer.bookings.filter(
+//       (booking) => booking.date === getCurrentDate()
+//     );
+//     displayDashboardCards(presentBookings);
+//   } else if (event.target.id === "futureBookings") {
+//     const futureBookings = currentCustomer.bookings.filter(
+//       (booking) => booking.date > getCurrentDate()
+//     );
+//     displayDashboardCards(futureBookings);
+//   }
+// };
+
+// const displayAvailableBookings = (startDate, roomType) => {
+//   let availableBooking = getAvailableRooms(startDate, roomType);
+//   displayBookingCards(startDate, availableBooking);
+// };
+
+
+
+
+
+// const getBookedRooms = (startDate = getCurrentDate()) => {
+//   let presentBookings = allBookingData.filter(
+//     (booking) => booking.date === startDate
+//   );
+//   return presentBookings;
+// };
+
+// const getTotalSales = (startDate = getCurrentDate()) => {
+//   let bookedRooms = getBookedRooms(startDate, allBookingData);
+//   let totalSales = bookedRooms.reduce((acc, booking) => {
+//     acc += booking.roomDetails.costPerNight;
+//     return acc;
+//   }, 0);
+//   return totalSales.toFixed(2);
+// };
+
+// const getDateForBooking = (bookingId) => {
+//   let findBooking = allBookingData.find((booking) => booking.id === bookingId);
+//   return findBooking.date;
+// };
+
+// const getStartDate = () => {
+//   console.log('START DATE', startDate.value)
+//   if (!startDate.value) {
+//     return getCurrentDate();
+//   }
+//   return startDate.value.replaceAll("-", "/");
+// };
