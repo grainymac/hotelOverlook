@@ -72,6 +72,23 @@ const loadData = () => {
     })
     .catch((error) => console.log(error));
   };
+
+  function updateData() {
+    const getAllCustomers = fetchData("http://localhost:3001/api/v1/customers", "GET");
+    const getAllRooms = fetchData("http://localhost:3001/api/v1/rooms", "GET");
+    const getBookings = fetchData("http://localhost:3001/api/v1/bookings", "GET");  
+  Promise.all([getAllCustomers, getAllRooms, getBookings])
+    .then((data) => {
+      allCustomerData = data[0].customers.map((customer) => new Customer(customer));
+      allRoomData = data[1].rooms.map((room) => new Room(room));
+      allBookingData = data[2].bookings.map((booking) => new Booking(booking));
+      allBookingData.map((booking) => booking.setRoom(allRoomData));
+      currentCustomer = allCustomerData[49];
+      loadCustomer()
+      searchResults.innerHTML = '';
+    })
+  };
+  
   
 //   const getBookingFromAPI = () => {
 //     let url = "http://localhost:3001/api/v1/bookings";
@@ -90,11 +107,11 @@ const loadData = () => {
 // };
 
 function postBookingToAPI(roomNumber) {
-  let url = "http://localhost:3001/api/v1/bookings";
-  let methodType = "POST";
-  let date = getStartDate();
-  let body = JSON.stringify({ userID: currentCustomer.id, date: date, roomNumber: roomNumber });
-  const bookingToPost = fetchData(url, methodType, body);
+  // let url = "http://localhost:3001/api/v1/bookings";
+  // let methodType = "POST";
+  // let date = getStartDate();
+  // let body = JSON.stringify({ userID: currentCustomer.id, date: date, roomNumber: parseInt(roomNumber) });
+  // const bookingToPost = fetchData(url, methodType, body);
   postAll(bookingToPost)
     .then((data) => {
 
@@ -171,7 +188,7 @@ function loadCustomer() {
   console.log('bookings', currentCustomer)
   currentCustomer.addBookings(allBookingData)
   displayWelcomeMsg()
-  displayBookingInfo()
+  displayAllBookings()
   currentCustomer.updateTotalCost()
   // display all customer booking information
   // getBooking()
@@ -202,6 +219,7 @@ function clearDisplay(display) {
 // }
 
 function displayWelcomeMsg() {
+  welcomeTxt.innerHTML = ''
   welcomeTxt.innerHTML += `Welcome, ${currentCustomer.name}
   <p><span class="sm">You have spent $${currentCustomer.totalCost} so far with us!</span></p>`
 }
@@ -209,16 +227,12 @@ function displayWelcomeMsg() {
 // function displayBookingInfo(event) {
 //   if (event.target.id === 'bookings') {
 //     displayAllBookings()
-//   }
-//   if (event.target.id === 'searchResults') {
-//     event.preventDefault();
-//     displayAvailableBookings()
-//   }
+
 // }
 
 function displayAllBookings(event) {
+  bookingInfo.innerHTML = ''
   bookingInfo.classList.remove('hidden')
-  searchResults.classList.add('hidden')
   const bookingInformation = currentCustomer.bookings.map(booking => {
     // console.log(booking.roomDetails)
   bookingInfo.innerHTML += `
@@ -286,7 +300,7 @@ function getCurrentDate() {
 
 function displayBookingCards(startDate, availableRooms) {
   // clearDisplay(searchResults);
-  console.log('availableRooms', availableRooms)
+  // console.log('availableRooms', availableRooms)
   if (!availableRooms.length) {
     searchResults.innerHTML += `<h2>no available bookings</h2>`;
   }
@@ -294,9 +308,10 @@ function displayBookingCards(startDate, availableRooms) {
 };
 
 function displayAvailableRooms(startDate, availableRooms) {
-  console.log('what', availableRooms)
+  searchResults.innerHTML = '';
+  // console.log('what', availableRooms)
   availableRooms.forEach((room) => {
-    console.log(room)
+    // console.log(room)
     searchResults.innerHTML += `
           <div class="flex card">
               <summary>
@@ -312,17 +327,29 @@ function displayAvailableRooms(startDate, availableRooms) {
               </summary>
               <button class="room-btn btn-secondary" id="${room.number}">reserve</button>
           </div>`;
-          let roomNum = `#${room.number}`
-    const postBtn = document.querySelector('.room-btn')
-    // postBtn.addEventListener('click', addNewBooking)
-    postBtn.addEventListener("click", (event) => {
-    event.preventDefault();
-    postBookingToAPI(roomNum);
-    console.log('POST event', event)
+          let roomNum = `${room.number}`
+          console.log('what IS THIS', typeof roomNum)
+          // postBtn.addEventListener('click', addNewBooking)
+          // postBtn.addEventListener("click", (event) => {
+          //   postBooking(roomNum);
+          });
+        
+        // event.preventDefault();
+        const postBtn = document.querySelectorAll('.room-btn')
+        postBtn.forEach(button => button.addEventListener('click', postBooking))
+        
+}
 
-});
-  });
-};
+function postBooking(event) {
+  let roomNum = parseInt(event.target.id)
+  let url = "http://localhost:3001/api/v1/bookings";
+  let methodType = "POST";
+  let date = getStartDate();
+  let body = { userID: currentCustomer.id, date: date, roomNumber: roomNum }
+  fetchData(url, methodType, body);
+  console.log(body)
+  setTimeout(updateData(), 1000)
+}
 
 // function hideElements() {
 //   hideElement(homeDisplay);

@@ -11,10 +11,10 @@ export const fetchData = (url, methodType, body) => {
     }
     
     if (methodType === 'POST') {
-        const postBookings = [];
+        // const postBookings = [];
         const bookings = fetch(url, {
             method: methodType,
-            body: body,
+            body: JSON.stringify(body),
             headers: { 'Content-Type': 'application/json' },
         })
         .then(response => {
@@ -25,8 +25,8 @@ export const fetchData = (url, methodType, body) => {
         })
         .then((response) => response.json())
         .then(data => console.log('POST', data))
-        postBookings.push(bookings)
-        return postBookings
+        // postBookings.push(bookings)
+        // return postBookings
     }
 
     if (methodType === 'DELETE') {
