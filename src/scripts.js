@@ -39,7 +39,6 @@ const headDashboardContainer = document.querySelector("#headDashboardContainer")
 const cards = document.querySelector("#cards");
 const currentUsername = document.querySelector("#currentUsername");
 const currentPassword = document.querySelector("#currentPassword");
-const loginBtn = document.querySelector("#loginBtn");
 const logoutBtn = document.querySelector("#logoutBtn");
 const welcomeTxt = document.querySelector('#welcomeTxt')
 const bookingInfo = document.querySelector('#bookingInfo')
@@ -53,6 +52,8 @@ const singleRoom = document.querySelector('#singleRoom')
 const startDate = document.querySelector("#startDate");
 const roomTypes = document.querySelector("#roomTypes");
 const searchResults = document.querySelector('#searchResults')
+const login = document.querySelector('#login')
+const loginBtn = document.querySelector("#loginBtn");
 
 //  ========================================================================= FETCH CALLS
 const loadData = () => {
@@ -152,7 +153,7 @@ const deleteBooking = (bookingToBeDeleted) => {
 
 
 // =========================================================================EVENT LISTENERS
-window.addEventListener("load", loadData);
+window.addEventListener("load", loginLoad);
 bookingsBtn.addEventListener('click', displayAllBookings)
 // reserveBtn.addEventListener('click', loadSearchResults)
 // reserveBtn.addEventListener("click", (event) => {
@@ -160,7 +161,13 @@ bookingsBtn.addEventListener('click', displayAllBookings)
 //   displayAvailableBookings(getStartDate(), roomTypes.value);
 // });
 reserveBtn.addEventListener("click", displayAvailableBookings)
-
+loginBtn.addEventListener("click", (event) => {
+  event.preventDefault();
+  if(validateSignIn(currentUsername.value, currentPassword.value)) {
+      loginUser();
+  }
+  loginView.reset();
+});
 // navHomeBtn.addEventListener("click", loadHomeDisplay);
 // navDashboardBtn.addEventListener("click", loadDashboardDisplay);
 // navReserveBtn.addEventListener("click", displayReservations);
@@ -198,6 +205,12 @@ function loadCustomer() {
   // getBooking()
 }
 
+function loginLoad() {
+  searchResults.innerHTML = ''
+  welcomeTxt.innerHTML = ''
+  login.classList.remove('hidden')
+
+}
 
 // function clearDisplay(display) {
 //   display.innerHTML = "";
@@ -371,7 +384,26 @@ function displaySuccessMessage() {
   searchResults.innerHTML += `<h2> THANK YOU FOR RESERVING</h2>`
   setTimeout(() => updateData(), 3000)
 }
+function validateSignIn(username, password) {
+  if (username === 'customer50' && password === 'overlook2021') {
+    displayValidateSuccessMessage();
+  } else if (password !== 'overlook2021') {
+    displayValidateInvalidMessage()
+    }
+}
 
+
+function displayValidateSuccessMessage() {
+  searchResults.innerHTML = ''
+  searchResults.innerHTML += `<h2> SUCCESSFUL LOGIN</h2>`
+  setTimeout(() => loadData(), 3000)
+}
+
+function displayValidateInvalidMessage() {
+  searchResults.innerHTML = ''
+  searchResults.innerHTML += `<h2> INCORRECT PASSWORD, TRY AGAIN</h2>`
+  setTimeout(() => loginLoad(), 3000)
+}
 // function  searchResults.innerHTML = ''
 // searchResults.innerHTML += `<h2> THANK YOU FOR RESERVING</h2>`
 
