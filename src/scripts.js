@@ -16,6 +16,7 @@ let allCustomerData = [];
 let allRoomData = [];
 let allBookingData = [];
 // let currentCustomer = "";
+let currentDate
 let currentCustomer = allCustomerData[49]; 
 
 //  =========================================================================QUERY SELECTORS
@@ -185,19 +186,22 @@ reserveBtn.addEventListener("click", displayAvailableBookings)
 
 //  =========================================================================FUNCTIONS
 function loadCustomer() {
-  console.log('bookings', currentCustomer)
+  // console.log('bookings', currentCustomer)
   currentCustomer.addBookings(allBookingData)
   displayWelcomeMsg()
   displayAllBookings()
   currentCustomer.updateTotalCost()
+  getCurrentDate()
+  startDate.min = currentDate
+  console.log(startDate.min)
   // display all customer booking information
   // getBooking()
 }
 
 
-function clearDisplay(display) {
-  display.innerHTML = "";
-};
+// function clearDisplay(display) {
+//   display.innerHTML = "";
+// };
 
 // function loadSearchResults(event) {
 //   bookingInfo.classList.add('hidden')
@@ -295,6 +299,7 @@ function getCurrentDate() {
   } else if (Number(mm) < 10) {
     mm = `0${mm}`
   }
+  currentDate = `${yyyy}-${mm}-${dd}`
   return `${yyyy}/${mm}/${dd}`;
 };
 
@@ -310,12 +315,11 @@ const ifAvailableRooms = currentCustomer.bookings.filter(booking => {
   // return searchResults.innerHTML += `<h2>no available booking please select another date</h2>`
   
 })
-console.log('AVAILABLE', availableRooms)
+// console.log('AVAILABLE', availableRooms)
 if (availableRooms.length === 0) {
   return searchResults.innerHTML += `<h2>no available bookings</h2>`;
 }
 displayAvailableRooms(startDate, availableRooms);
-
 };
 
 function displayAvailableRooms(startDate, availableRooms) {
@@ -359,8 +363,18 @@ function postBooking(event) {
   let body = { userID: currentCustomer.id, date: date, roomNumber: roomNum }
   fetchData(url, methodType, body);
   console.log(body)
-  setTimeout(updateData(), 1000)
+displaySuccessMessage()
+  // setTimeout(updateData(), 1000)
 }
+
+function displaySuccessMessage() {
+  searchResults.innerHTML = ''
+  searchResults.innerHTML += `<h2> THANK YOU FOR RESERVING</h2>`
+  setTimeout(() => updateData(), 3000)
+}
+
+// function  searchResults.innerHTML = ''
+// searchResults.innerHTML += `<h2> THANK YOU FOR RESERVING</h2>`
 
 // function hideElements() {
 //   hideElement(homeDisplay);
