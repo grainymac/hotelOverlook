@@ -344,7 +344,6 @@ function displayAvailableRooms(startDate, availableRooms) {
           </div>`;
           let roomNum = `${room.number}`
           console.log('what IS THIS', typeof roomNum)
-          // postBtn.addEventListener('click', addNewBooking)
           // postBtn.addEventListener("click", (event) => {
           //   postBooking(roomNum);
           });
