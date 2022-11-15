@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -20,27 +21,25 @@
                 <h1 id="welcomeTxt"></h1>
                 <p class="welcome-text">If you are seeking superior hotels, our Overlook Hotel is the perfect location
                     to begin your search. Our luxury sample hotel blends current-day modernity with classic elegance.
-                    You’ll enjoy the convenience of newly redesigned rooms and suites, a full-service fitness center,
+                    You will enjoy the convenience of newly redesigned rooms and suites, a full-service fitness center,
                     swimming pool, large restaurant and some of best bars and lounges to celebrate and entertain in
                     sophisticated style. Just Login to get your room reserved!</p>
             </div>
-            <div>
+            <section>
                 <nav class="card bg-light" id="customerBookingHistory">
-                    <h2 class="my-2">View Bookings</h2>
+                    <h2 class="my-2">View your Reservations</h2>
                     <ul id="bookingOptions">
-                        <li><button class="sub-link" id="bookings">All Bookings</button></li>
-                        <li><button class="sub-link" id="pastBookings">Past Bookings</button></li>
-                        <li><button class="sub-link" id="presentBookings">Todays Bookings</button></li>
-                        <li><button class="sub-link" id="futureBookings">Future Bookings</button></li>
+                        <li><button class="sub-link" id="bookings">All Reservations</button></li>
                     </ul>
                     <h2 class="my-2">Total Cost</h2>
                     <ul>
                         <li id="totalCost"></li>
                     </ul>
                 </nav>
+
                 <article>
                     <h2 class="md">Select a date and room to reserve</h2>
-                    <form class="custom-search-form bg-light card">
+                    <form class="custom-search-form bg-light card" role="search">
                         <fieldset class="sm">
                             <legend>search options</legend>
                             <label for="startDate">Date: </label>
@@ -53,43 +52,36 @@
                                 <option value="junior suite">Junior Suite</option>
                                 <option value="single room">Single Room</option>
                             </select>
-                            <button class="btn btn-secondary" id="reserveBtn">Reserve</button>
+                            <button class="btn btn-secondary" id="reserveBtn">Search</button>
                         </fieldset>
                     </form>
                 </article>
-    
+
                 <div class="container grid p-1" id="dashboardContainer">
-                    
                 </div>
-            </div>
+            </section>
 
-                <section class="card" hidden>
-                    Login View
-                    <form class="login-display" id="loginDisplay">
-                      <h2>Please login</h2>
-                      <div class="login-form">
+            <section class="card" hidden>
+                Login View
+                <form class="login-display" id="loginDisplay">
+                    <h2>Please login</h2>
+                    <div class="login-form">
                         <input type="text" name="name" placeholder="Username" id="currentUsername" required>
-                      </div>
-                      <div class="login-form">
+                    </div>
+                    <div class="login-form">
                         <input type="password" name="password" placeholder="Password" id="currentPassword" required>
-                      </div>
-                        <button class="btn btn-primary" id="loginBtn" type="submit">Login</button>
-                    </form>
-                    Logout View
-                    <section class="logout-display hidden" id="logoutDisplay">
-                        <h2>You're already logged in, would you like to logout?</h2>
-                        <button class="btn btn-primary button-center" id="logoutBtn" type="submit">Logout</button>
-                    </section>
-                    <p id="validateMsg">
-                    <p>
+                    </div>
+                    <button class="btn btn-primary" id="loginBtn" type="submit">Login</button>
+                </form>
+                Logout View
+                <section class="logout-display hidden" id="logoutDisplay">
+                    <h2>You're already logged in, would you like to logout?</h2>
+                    <button class="btn btn-primary button-center" id="logoutBtn" type="submit">Logout</button>
                 </section>
-            </div>
+                <p id="validateMsg">
+                <p>
+            </section>
         </div>
-    </section>
-
-    <section class="head bg-primary py-3 hidden" id="headDashboard">
-        <div class="container grid" id="headDashboardContainer">
-
         </div>
     </section>
 
@@ -98,30 +90,8 @@
         <div class="container grid hidden" id="bookingInfo">
 
         </div>
-        <div class="container grid hidden" id="searchResults"> 
+        <div class="container grid hidden" id="searchResults">
 
-        </div>
-    </section>
-
-    <section class="my-4 hidden" id="dashboardDisplay">
-        <div class="container grid booking-history">
-            <nav class="card bg-light p-3" id="customerBookingHistory">
-                <h2 class="my-2">View Bookings</h2>
-                <ul id="bookingOptions">
-                    <li><button class="sub-link" id="bookings">All Bookings</button></li>
-                    <li><button class="sub-link" id="pastBookings">Past Bookings</button></li>
-                    <li><button class="sub-link" id="presentBookings">Todays Bookings</button></li>
-                    <li><button class="sub-link" id="futureBookings">Future Bookings</button></li>
-                </ul>
-                <h2 class="my-2">Total Cost</h2>
-                <ul>
-                    <li id="totalCost"></li>
-                </ul>
-            </nav>
-
-            <div class="container grid p-1" id="dashboardContainer">
-                
-            </div>
         </div>
     </section>
 
@@ -129,19 +99,6 @@
         <div class="container grid" id="bookContainer">
         </div>
     </section>
-    <!-- <section class="card bg-dark">
-        <form class="home-view-login" id="login">
-            <h2>Please login</h2>
-            <div class="form-control">
-            <input type="text" name="name" placeholder="Username" id="currentUsername" required>
-            </div>
-            <div class="form-control">
-            <input type="password" name="password" placeholder="Password" id="currentPassword" required>
-            </div>
-            <button class="btn btn-primary" id="loginBtn" type="submit">Login</button>
-        </form>
-    </section> -->
 </body>
-
 <script src="bundle.js"></script>
 </html>
