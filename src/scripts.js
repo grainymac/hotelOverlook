@@ -30,11 +30,14 @@ const startDate = document.querySelector("#startDate");
 const roomTypes = document.querySelector("#roomTypes");
 const searchResults = document.querySelector('#searchResults')
 const login = document.querySelector('#login')
+const logout = document.querySelector('#logout')
 const loginBtn = document.querySelector("#loginBtn");
 const username = document.querySelector("#username");
 const password = document.querySelector("#password");
 const message = document.querySelector('#message')
 const bookingForm = document.querySelector('#bookingForm')
+const menu = document.querySelector('#menu')
+const bookingTitle = document.querySelector('#bookingTitle')
 
 //  ========================================================================= FETCH CALLS
 const loadData = () => {
@@ -46,7 +49,6 @@ const loadData = () => {
       allCustomerData = data[0].customers.map((customer) => new Customer(customer));
       allRoomData = data[1].rooms.map((room) => new Room(room));
       allBookingData = data[2].bookings.map((booking) => new Booking(booking));
-      console.log('booking shit', allBookingData)
       allBookingData.map((booking) => booking.setRoom(allRoomData));
       currentCustomer = allCustomerData[49];
       loadCustomer()
@@ -79,10 +81,13 @@ loginBtn.addEventListener("click", (event) => {
   event.preventDefault();
   validateSignIn(username.value, password.value)
 });
+logout.addEventListener('click', loginLoad)
 
 
 //  =========================================================================FUNCTIONS
 function loadCustomer() {
+  bookingTitle.classList.remove('hidden')
+  menu.classList.remove('hidden')
   bookingForm.classList.remove('hidden')
   currentCustomer.addBookings(allBookingData)
   displayWelcomeMsg()
@@ -96,6 +101,10 @@ function loginLoad() {
   searchResults.innerHTML = ''
   welcomeTxt.innerHTML = ''
   login.classList.remove('hidden')
+  bookingTitle.classList.add('hidden')
+  menu.classList.add('hidden')
+  bookingForm.classList.add('hidden')
+  bookingInfo.classList.add('hidden')
 }
 
 function displayWelcomeMsg() {
@@ -107,7 +116,6 @@ function displayWelcomeMsg() {
 function displayAllBookings(event) {
   bookingInfo.innerHTML = ''
   bookingInfo.classList.remove('hidden')
-  console.log('CURRENT CUSTOMER', currentCustomer)
   const bookingInformation = currentCustomer.bookings.map(booking => {
     bookingInfo.innerHTML += `
     <div class="card" id=${booking.id}>
@@ -137,7 +145,6 @@ function filterRoomType(rooms, roomTypes) {
   return filteredRooms;
 };
 
-console.log(startDate.value, roomTypes.value)
 function getAvailableRooms(startDate, roomTypes) {
   let bookRoomNumbers = allBookingData.filter((booking) => booking.date === startDate)
     .map((bookedRoom) => bookedRoom.roomNumber);
@@ -149,7 +156,6 @@ function getAvailableRooms(startDate, roomTypes) {
 };
 
 function getStartDate() {
-  console.log('START DATE', startDate.value)
   if (!startDate.value) {
     return getCurrentDate();
   }
@@ -173,7 +179,6 @@ function getCurrentDate() {
 
 function displayBookingCards(startDate, availableRooms) {
   searchResults.innerHTML = ''
-  console.log('what is this', currentCustomer)
   const ifAvailableRooms = currentCustomer.bookings.filter(booking => {
     if (booking.date === startDate) {
     }
@@ -203,7 +208,6 @@ function displayAvailableRooms(startDate, availableRooms) {
               <button class="room-btn btn-secondary" id="${room.number}">reserve</button>
           </div>`;
     let roomNum = `${room.number}`
-    console.log('what IS THIS', typeof roomNum)
     const postBtn = document.querySelectorAll('.room-btn')
     postBtn.forEach(button => button.addEventListener('click', postBooking))
 
@@ -217,7 +221,6 @@ function postBooking(event) {
   let date = getStartDate();
   let body = { userID: currentCustomer.id, date: date, roomNumber: roomNum }
   fetchData(url, methodType, body);
-  console.log(body)
   displaySuccessMessage()
 }
 
@@ -233,7 +236,6 @@ function validateSignIn(username, password) {
     login.classList.add('hidden')
     loadData()
   } else if (password !== 'overlook2021') {
-    console.log('ughhhhhhhhhh', 238)
     message.innerText = `Wrong password, try again!!`
   }
 }

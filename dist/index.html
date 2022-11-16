@@ -25,15 +25,12 @@
                     sophisticated style. Just Login to get your room reserved!</p>
             </div>
             <div>
-                <nav class="card bg-light" id="customerBookingHistory">
-                    <h2 class="my-2">View All Reservations</h2>
+                <nav class="card bg-light hidden" id="menu">
+                    <h2 class="my-2">Menu</h2>
                     <ul id="bookingOptions">
-                        <li><button class="sub-link" id="bookings">All Bookings</button></li>
-                    </ul>
-                    <h2 class="my-2">Total Cost</h2>
-                    <ul>
-                        <li id="totalCost"></li>
-                    </ul>
+                        <li><button class="sub-link" id="bookings">View Reservations</button></li>
+                        <li><button class="sub-link" id="logout">Logout</button></li>
+
                 </nav>
                 <article>
                     <h2 class="md">Select a date and room to reserve</h2>
@@ -85,7 +82,7 @@
     </section>
 
     <section class="head bg-primary py-3">
-        <h2 class="md m-2">Current Booking Information</h2>
+        <h2 class="md m-2 hidden" id="bookingTitle">Current Booking Information</h2>
         <div class="container grid hidden" id="bookingInfo">
 
         </div>
